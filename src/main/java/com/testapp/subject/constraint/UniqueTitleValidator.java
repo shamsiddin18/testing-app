@@ -13,7 +13,6 @@ public class UniqueTitleValidator implements ConstraintValidator<UniqueTitleCons
 
     }
 
-
     @Override
     public void initialize(UniqueTitleConstraint constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
@@ -29,7 +28,6 @@ public class UniqueTitleValidator implements ConstraintValidator<UniqueTitleCons
         if (ss == null) {
             return true;
         }
-
 
         return false;
     }
