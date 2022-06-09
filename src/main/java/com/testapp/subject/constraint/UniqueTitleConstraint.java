@@ -9,9 +9,8 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = UniqueTitleValidator.class)
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-
 public @interface UniqueTitleConstraint {
-    String message() default "Login should be unique";
+    String message() default "Subject should be unique";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

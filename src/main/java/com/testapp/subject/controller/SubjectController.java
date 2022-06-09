@@ -113,21 +113,21 @@ public class SubjectController {
         return "testing/result";
     }
 
-    @GetMapping("/add")
-    public String goAdd(Model model){
-        model.addAttribute("addRequest", new Subject());
+    @GetMapping("/subject/add")
+    public String showCreateForm(Model model){
+        model.addAttribute("subject", new Subject());
         return "subject/add";
     }
 
 
-    @PostMapping("/add")
-    public String addSubject(@Valid Subject subject, BindingResult result){
-        if(result.hasErrors()){
+    @PostMapping("/subject/add")
+    public String submitCreateForm(@Valid Subject subject, BindingResult result){
+        if (result.hasErrors()) {
             return "subject/add";
         }
+
         subjectService.creatSubject(subject);
+
         return "redirect:/subjects";
-
     }
-
 }
