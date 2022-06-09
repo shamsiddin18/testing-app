@@ -4,36 +4,29 @@
     <title>Register Page</title>
 </head>
 <body>
-
-<section layout:fragment="body">
-  <div class="container">
-     <h2>Choose your subject</h2>
+  <section layout:fragment="body">
+    <div class="container">
+      <h2>Choose your subject</h2>
       <a th:href="@{'/subject/add'}" class="btn btn-primary">Adding Subjects</a>
       <div class="col-12">
-            <table class="table table-hover">
-                <thead>
-                   <tr>
-                         <th scope="col">#</th>
-                         <th scope="col">Subjects</th>
-
-                   </tr>
-                </thead>
-                <tbody>
-                   <tr th:each="subject:${subjects}">
-                     <th th:text="${subject.id}"></th>
-                     <td>
-                         <a th:href="@{'/subject/view/'+${subject.id}}" th:text="${subject.title}"></a>
-                     </td>
-
-                   </tr>
-
-                </tbody>
-
-            </table>
-<!--          <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>-->
-<!--          <a href="/add" class="btn btn-primary" role="button" data-bs-toggle="button">Adding Subjects</a>-->
+        <table class="table table-hover">
+            <thead>
+              <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Subjects</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="subject:${subjects}">
+                <th th:text="${subject.id}"></th>
+                <td>
+                    <a th:href="@{'/subject/view/'+${subject.id}}" th:text="${subject.title}"></a>
+                </td>
+              </tr>
+            </tbody>
+        </table>
       </div>
-  </div>
-</section>
+    </div>
+  </section>
 </body>
 </html>

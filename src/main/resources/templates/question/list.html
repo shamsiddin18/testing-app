@@ -4,36 +4,33 @@
     <title>Register Page</title>
 </head>
 <body>
-<section layout:fragment="body">
-<form  action="/testing" method="post">
-    <div class="container">
-        <div class="justify-content-center">
-            <h3>Test</h3>
-       <table>
-           <tr th:each="question,iter:${questions}">
-               <td th:text="|${iter.index + 1}. ${question.text}|"></td>
-               <td>
-                   <a th:href="|/question/${question.id}/edit|">edit</a><br>
-               </td>
-               <table class="table">
-<!--                   <tr th:each="answer,iter:${answers.get(question.id)}">-->
-<!--                       <input type="radio" th:attr="name=${question.id}" th:value="${answer.id}">-->
-<!--                       <label th:text="${answer.text}"></label><br>-->
-<!--                   </tr>-->
-               </table>
-           </tr>
-           <tr>
-               <td >
-                   <button type="submit">Submit</button>
-               </td>
-           </tr>
-       </table>
-        </div>
-    </div>
-
-
-
-</form >
-</section>
+    <section layout:fragment="body">
+        <form  action="/testing" method="post">
+            <div class="container">
+                <div class="justify-content-center">
+                    <h3>Test</h3>
+                    <table>
+                        <tr th:each="question,iter:${questions}">
+                            <td th:text="|${iter.index + 1}. ${question.text}|"></td>
+                            <td>
+                                <a th:href="|/question/${question.id}/edit|">edit</a><br>
+                            </td>
+                            <table class="table">
+        <!--                   <tr th:each="answer,iter:${answers.get(question.id)}">-->
+        <!--                       <input type="radio" th:attr="name=${question.id}" th:value="${answer.id}">-->
+        <!--                       <label th:text="${answer.text}"></label><br>-->
+        <!--                   </tr>-->
+                            </table>
+                        </tr>
+                        <tr>
+                            <td >
+                                <button type="submit">Submit</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </section>
 </body>
 </html>

@@ -4,25 +4,24 @@
     <title>Register Page</title>
 </head>
 <body>
-<section layout:fragment="body">
-    <div class="container">
-        <div class="row justify-content-md-center">
-            <form class="col-6 needs-validation" action="#"  th:action="@{/subject/add}"   th:object="${subject}" method="POST" novalidate>
-                <h2>Adding Subject</h2>
-                <div class="col-12">
-                    <label for="title" class="form-label">Subject</label>
-                    <div class="input-group has-validation">
-                        <input type="text" th:field="*{title}" class="form-control is-invalid" id="title" required>
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+    <section layout:fragment="body">
+        <div class="container">
+            <div class="row justify-content-md-center">
+                <form class="col-6 needs-validation" action="#"  th:action="@{/subject/add}"   th:object="${subject}" method="POST" novalidate>
+                    <h2>Adding Subject</h2>
+                    <div class="col-12">
+                        <label for="title" class="form-label">Subject</label>
+                        <div class="input-group has-validation">
+                            <input type="text" th:field="*{title}" class="form-control is-invalid" id="title" required>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <button type="submit" class="btn btn-primary" value="Add">Add</button>
-                </div>
-            </form>
-
+                    <div>
+                        <button type="submit" class="btn btn-primary" value="Add">Add</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
     </section>
 </body>
 </html>
