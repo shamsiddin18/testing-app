@@ -10,7 +10,6 @@ public class UniqueTitleValidator implements ConstraintValidator<UniqueTitleCons
 
     public UniqueTitleValidator(SubjectRepository subjectRepository){
         this.subjectRepository=subjectRepository;
-
     }
 
     @Override

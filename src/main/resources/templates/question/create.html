@@ -12,12 +12,14 @@
                 <label class="visually-hidden" >Question Name</label>
                 <input type="text" th:field="*{text}" placeholder="Question"/> <br>
             </div>
-            <div class="col-auto">
-                <label class="visually-hidden" for="autoSizingSelect">Preference</label>
-                <select class="form-select" id="autoSizingSelect">
-                    <option selected>Subjects</option>
-                    <option value="1">One</option>
-                </select>
+            <div class="input-group mb-3">
+                <select class="form-select" id="inputGroupSelect01" th:field="*{subjectId}">
+                    <option value="0">Select</option>
+                    <th:block th:each="subject:${subjects}">
+                        <option th:value="${subject.id}" th:text="${subject.title}"></option>
+                    </th:block>
+                </select><br>
+                <span th:if="${#fields.hasErrors('subjectId')}" th:errors="*{subjectId}"></span>
             </div>
             <div class="col-auto">
                 <button type="submit" class="btn btn-primary">Submit</button>

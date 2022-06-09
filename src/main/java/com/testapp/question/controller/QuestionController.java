@@ -93,7 +93,7 @@ public class QuestionController {
 
         this.questionService.save(question);
 
-        return "redirect:/questions";
+        return "redirect:/subjects";
     }
 
     private List<Subject> getAllSubjects()
