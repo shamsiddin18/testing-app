@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet" />
+</head>
+<body>
+<div th:replace="header::header"></div>
+<section>
+    <h1 class="display-1">Welcome to TEST APP</h1>
+
+    <a href="/login" class="btn btn-primary" role="button" data-bs-toggle="button">Log In</a>
+    <a href="/register" class="btn btn-primary active" role="button" data-bs-toggle="button" aria-pressed="true">Register</a>
+    <a href="/subjects" class="btn btn-primary" role="button" data-bs-toggle="button">Subjects</a>
+</section>
+<div th:replace="footer :: footer"></div>
+
+
+<script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

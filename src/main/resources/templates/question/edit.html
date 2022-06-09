@@ -1,0 +1,52 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet" />
+<body>
+<form  action="/testing" method="post">
+    <div th:replace="header:: header"></div>
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <form action="#"  th:action="|/question/${question.id}/edit|" th:object="${question}" method="POST" novalidate>
+               <h2 th:text="${question.text}"></h2>
+                <table>
+                    <tr>
+                        <td>
+                            Text:
+                        </td>
+                        <td>
+                            <div class="col-12">
+                            <div class="input-group has-validation">
+                                <input type="text" th:field="*{text}" class="form-control is-invalid" aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback" >
+                                <div id="validationServerUsernameFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('text')}" th:errors="*{text}">
+                                </div>
+                            </div>
+                            </div>
+                         </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Subject:
+                        </td>
+                        <td>
+                            <div class="input-group mb-3" th:field="*{subjectId}">
+                                <select class="form-select" id="inputGroupSelect01" >
+                                    <th:block th:each="subject:${subjects}">
+                                        <option th:value="${subject.id}" th:text="${subject.title}"></option>
+                                    </th:block>
+                                </select><br>
+                                <span th:if="${#fields.hasErrors('subjectId')}" th:errors="*{subjectId}">Subject Error</span>
+                            </div>
+                      </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input type="submit" class="btn btn-primary" name="submit" value="Save"/>
+                        </td>
+                    </tr>
+                </table>
+    </form>
+        </div>
+    </div>
+  <div th:replace="footer:: footer"></div>
+</form >
+</body>
+</html>

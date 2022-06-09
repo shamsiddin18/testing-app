@@ -1,0 +1,44 @@
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet" />
+<body>
+<div th:replace="header:: header"></div>
+<div class="container">
+    <div class="justify-content-center">
+
+        <table>
+            <tr>
+                <td th:text="|Total correct answers: ${totalCorrect}|"></td>
+            </tr>
+            <tr>
+                <td th:text="|Total incorrect answers: ${totalIncorrect}|"></td>
+            </tr>
+            <tr>
+                <td>
+                    <h2>Answers:</h2><br/>
+                    <table>
+                        <tr th:each="map:${questions}">
+                            <td>
+                                <label th:text="|question: ${map.value.text}|"></label><br>
+                                <span th:if="${selectedAnswers.get(map.key).correct}" >
+                            <label th:text="|  Answer: ${correctAnswers.get(map.key).text}|"></label>
+                        </span>
+                                <div class="col-12">
+                                <span th:unless="${selectedAnswers.get(map.key).correct}" >
+                            <label th:text="|  Selected answer: ${selectedAnswers.get(map.key).text}|"></label><br>
+                            <label th:text="|  Correct answer: ${correctAnswers.get(map.key).text}|"></label>
+                                </span> </div>
+                                <br>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+
+    </div>
+</div>
+<div th:replace="footer:: footer"></div>
+</body>
+</html>

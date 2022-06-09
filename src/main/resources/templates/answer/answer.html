@@ -1,0 +1,26 @@
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet" />
+<body>
+
+     <form>
+         <div th:replace="header:: header"></div>
+         <h1>Correct Answer!</h1>
+        <table>
+            <tr th:each="answer:${answers}">
+                <td th:value="${answer.id}"></td>
+                <td th:text="${answer.text}"></td>
+                <td>
+                </td>
+            </tr>
+        </table>
+
+<!--         <ul class="list-group" th:each="answer:${answers}">-->
+<!--             <li class="list-group-item" th:value="${answer.id}"></li>-->
+<!--             <li class="list-group-item" th:text="${answer.text}"></li>-->
+<!--         </ul>-->
+
+         <div th:replace="footer:: footer"></div>
+    </form>
+</body>
+</html>

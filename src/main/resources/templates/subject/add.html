@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet" />
+
+    <title>Register Page Subject</title>
+</head>
+    <body>
+
+    <div th:replace="header :: header"></div>
+
+
+
+    <div class="container">
+        <div class="row justify-content-md-center">
+       <form class="col-6 needs-validation" action="#"  th:action="@{/add}"   th:object="${addRequest}" method="POST" novalidate>
+        <h2>Adding Subject</h2>
+           <div class="col-12">
+               <label for="title" class="form-label">Subject</label>
+               <div class="input-group has-validation">
+                   <input type="text" th:field="*{title}" class="form-control is-invalid" id="title" aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback1" required>
+                   <div id="validationServerUsernameFeedback1" class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">
+                   </div>
+               </div>
+           </div>
+
+             <div>
+               <button type="submit" class="btn btn-primary" value="Add">Add</button>
+             </div>
+
+
+        </form>
+
+       <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+        </div>
+    </div>
+    <div th:replace="footer::footer"> </div>
+    </body>
+</html>
+
+

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet" />
+    <title>Title</title>
+</head>
+ <body>
+ <div th:replace="header:: header"></div>
+  <div class="container">
+     <h2>Choose your subject</h2>
+     <a href="/add" class="btn btn-primary" role="button" data-bs-toggle="button">Adding Subjects</a>
+      <div class="col-12">
+            <table class="table table-hover">
+                <thead>
+                   <tr>
+                         <th scope="col">#</th>
+                         <th scope="col">Subjects</th>
+
+                   </tr>
+                </thead>
+                <tbody>
+                   <tr th:each="subject:${subjects}">
+                     <th th:text="${subject.id}"></th>
+                     <td>
+                         <a th:href="@{'/subject/view/'+${subject.id}}" th:text="${subject.title}"></a>
+                     </td>
+
+                   </tr>
+
+                </tbody>
+
+            </table>
+          <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+<!--          <a href="/add" class="btn btn-primary" role="button" data-bs-toggle="button">Adding Subjects</a>-->
+      </div>
+  </div>
+ <div th:replace="footer:: footer"></div>
+      </body>
+</html>
