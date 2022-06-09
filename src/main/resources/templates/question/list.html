@@ -1,8 +1,11 @@
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-<link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet" />
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
+<head>
+    <title>Register Page</title>
+</head>
 <body>
+<section layout:fragment="body">
 <form  action="/testing" method="post">
-<div th:replace="header:: header"></div>
     <div class="container">
         <div class="justify-content-center">
             <h3>Test</h3>
@@ -30,7 +33,7 @@
 
 
 
-<div th:replace="footer:: footer"></div>
 </form >
+</section>
 </body>
 </html>

@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet" />
-    <title>Register Page Subject</title>
+    <title>Register Page</title>
 </head>
 <body>
+<section layout:fragment="body">
     <div class="container">
         <div class="row justify-content-md-center">
             <form class="col-6 needs-validation" action="#"  th:action="@{/subject/add}"   th:object="${subject}" method="POST" novalidate>
@@ -22,10 +20,10 @@
                     <button type="submit" class="btn btn-primary" value="Add">Add</button>
                 </div>
             </form>
-            <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+
         </div>
     </div>
+    </section>
 </body>
 </html>
-
 
