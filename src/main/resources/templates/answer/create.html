@@ -4,6 +4,55 @@
     <title>Register Page</title>
 </head>
 <body>
-    <section layout:fragment="body"></section>
+    <section layout:fragment="body">
+        <div class="container">
+            <div class="row justify-content-md-center">
+
+                <form action="#"  th:action="@{/answer/create}" method="POST" th:object="${answer}">
+                    <h2>Adding Question</h2>
+                    <table>
+                        <tr>
+                            <td>Text</td>
+                            <td>
+                                <input type="text" th:field="*{text}" placeholder="answer">
+                                <span th:if="${#fields.hasErrors('text')}" th:errors="*{text}">Text Error</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Subject:
+                            </td>
+                            <td>
+                                <select th:field="*{questionId}">
+                                    <option value="0">Select</option>
+                                    <th:block th:each="question:${questions}">
+                                        <option th:value="${question.id}" th:text="${question.text}"></option>
+                                    </th:block>
+                                </select> <br>
+                                <span th:if="${#fields.hasErrors('questionId')}" th:errors="*{questionId}">Subject Error</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Correct(yes/no)</td>
+                            <td>
+                                <select th:field="*{correct}">
+                                    <option value="true">yes</option>
+                                    <option value="false">no</option>
+                                </select> <br>
+                                <span th:if="${#fields.hasErrors('correct')}" th:errors="*{correct}">Text Error</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2">
+                                <input type="submit" name="submit" value="Create"/>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+
+    </section>
 </body>
 </html>
