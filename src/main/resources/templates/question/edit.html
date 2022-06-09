@@ -1,7 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet" />
 <body>
-<form  action="/testing" method="post">
+
     <div th:replace="header:: header"></div>
     <div class="container">
         <div class="row justify-content-md-center">
@@ -27,13 +27,14 @@
                             Subject:
                         </td>
                         <td>
-                            <div class="input-group mb-3" th:field="*{subjectId}">
-                                <select class="form-select" id="inputGroupSelect01" >
+                            <div class="input-group mb-3">
+                                <select class="form-select" id="inputGroupSelect01" th:field="*{subjectId}">
+                                    <option value="0">Select</option>
                                     <th:block th:each="subject:${subjects}">
                                         <option th:value="${subject.id}" th:text="${subject.title}"></option>
                                     </th:block>
                                 </select><br>
-                                <span th:if="${#fields.hasErrors('subjectId')}" th:errors="*{subjectId}">Subject Error</span>
+                                <span th:if="${#fields.hasErrors('subjectId')}" th:errors="*{subjectId}"></span>
                             </div>
                       </td>
                     </tr>
@@ -47,6 +48,6 @@
         </div>
     </div>
   <div th:replace="footer:: footer"></div>
-</form >
+
 </body>
 </html>

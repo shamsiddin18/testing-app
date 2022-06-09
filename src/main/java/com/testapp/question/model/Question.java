@@ -2,6 +2,7 @@ package com.testapp.question.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -12,7 +13,7 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     Integer id;
-    @NotNull
+    @NotEmpty(message = "Question can not be empty")
     @Size(min=3,max=1000)
     String text;
 
