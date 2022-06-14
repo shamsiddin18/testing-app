@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
+<head>
+    <title>Question view page</title>
+</head>
+<body>
+    <section layout:fragment="body">
+        <h3 th:text="*{question.text}"></h3>
+        <h6>Answers: </h6>
+        <ul th:each="answer,iter:${question.answers}">
+            <li th:text="${answer}"></li>
+        </ul>
+    </section>
+</body>
+</html>

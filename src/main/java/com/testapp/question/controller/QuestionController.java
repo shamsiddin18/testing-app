@@ -71,6 +71,18 @@ public class QuestionController {
         return "question/edit";
     }
 
+    @GetMapping("/question/{id}/view")
+    public String view(@PathVariable Integer id, Model model){
+        Question question = this.questionRepository.findById(id).orElse(null);
+        if (question == null) {
+            return "404";
+        }
+
+        model.addAttribute("question", question);
+
+        return "question/view";
+    }
+
     @PostMapping("/question/create")
     public String submitCreateForm(@Valid Question question, BindingResult result, Model model){
         if (result.hasErrors()) {

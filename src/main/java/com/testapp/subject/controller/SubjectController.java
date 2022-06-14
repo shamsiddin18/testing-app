@@ -13,10 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Controller
 public class SubjectController {
@@ -53,9 +50,9 @@ public class SubjectController {
         }
         model.addAttribute("subject", subject);
         List<Question> questions = this.questionRepository.findBySubjectId(subject.getId());
-        HashMap<Integer, List<Answer>> answersMap = new HashMap<Integer, List<Answer>>();
+        HashMap<Integer, Set<Answer>> answersMap = new HashMap<Integer, Set<Answer>>();
         for (Question question: questions) {
-            answersMap.put(question.getId(), this.answerRepository.findByQuestionId(question.getId()));
+            answersMap.put(question.getId(), question.getAnswers());
         }
         model.addAttribute("questions", questions);
         model.addAttribute("answers", answersMap);
@@ -80,7 +77,7 @@ public class SubjectController {
             }
             questions.put(questionId.toString(), question);
             Integer answerId = Integer.parseInt(map.getValue());
-            List<Answer> answers = this.answerRepository.findByQuestionId(questionId);
+            Set<Answer> answers = question.getAnswers();
 
             for (Answer answer : answers) {
                 if (answer.isCorrect()) {

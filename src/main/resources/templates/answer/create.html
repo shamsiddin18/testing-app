@@ -23,13 +23,13 @@
                                 Subject:
                             </td>
                             <td>
-                                <select th:field="*{questionId}">
+                                <select th:field="*{question}">
                                     <option value="0">Select</option>
                                     <th:block th:each="question:${questions}">
                                         <option th:value="${question.id}" th:text="${question.text}"></option>
                                     </th:block>
                                 </select> <br>
-                                <span th:if="${#fields.hasErrors('questionId')}" th:errors="*{questionId}">Subject Error</span>
+                                <span th:if="${#fields.hasErrors('question')}" th:errors="*{question}">Subject Error</span>
                             </td>
                         </tr>
                         <tr>

@@ -31,7 +31,6 @@ public class AnswerController {
         this.questionRepository = questionRepository;
     }
 
-
     @GetMapping("/answers")
     public String list(Model model) {
         List<Answer> answers = this.repository.findAll();
@@ -70,8 +69,5 @@ public class AnswerController {
         }
         answerService.create(answer);
         return "redirect:/subjects";
-
     }
-
-
 }
