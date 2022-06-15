@@ -21,14 +21,9 @@ public class Question {
     @Size(min=3,max=1000)
     private String text;
 
-//    @NotNull
-//    @Min(1)
-//    private Integer subjectId;
-
     @ManyToOne
-    @JoinColumn(name = "subject_id" ,nullable = false)
+    @JoinColumn(name = "subject_id", nullable = false)
     private Subject subject;
-
 
     @OneToMany(mappedBy="question")
     private Set<Answer> answers;
@@ -48,8 +43,6 @@ public class Question {
     public void setText(String text) {
         this.text = text;
     }
-
-
 
     public Set<Answer> getAnswers() {
         return answers;

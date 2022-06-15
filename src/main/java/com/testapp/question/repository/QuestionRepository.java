@@ -9,5 +9,4 @@ import java.util.Optional;
 public interface QuestionRepository extends JpaRepository<Question, Integer> {
     List<Question> findBySubjectId(Integer subject_id);
     Optional <Question> findByTextAndSubjectId(String text, Integer subject_id);
-
 }

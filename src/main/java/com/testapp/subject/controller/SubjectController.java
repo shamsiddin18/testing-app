@@ -75,17 +75,17 @@ public class SubjectController {
                 totalIncorrect++;
                 continue;
             }
-            questions.put(questionId.toString(), question);
+            questions.put(map.getKey(), question);
             Integer answerId = Integer.parseInt(map.getValue());
             Set<Answer> answers = question.getAnswers();
 
             for (Answer answer : answers) {
                 if (answer.isCorrect()) {
-                    correctAnswers.put(questionId.toString(), answer);
+                    correctAnswers.put(map.getKey(), answer);
                 }
 
                 if (Objects.equals(answer.getId(), answerId)) {
-                    selectedAnswers.put(questionId.toString(), answer);
+                    selectedAnswers.put(map.getKey(), answer);
                     if(answer.isCorrect()) {
                         totalCorrect++;
                         continue;
@@ -94,12 +94,7 @@ public class SubjectController {
                     totalIncorrect++;
                 }
             }
-
-            Answer answer= this.answerRepository.findById(answerId).orElse(null);
         }
-//     Integer Correct = (questionRepository.findByTrueAnswer(totalCorrect));
-        // Integer Correctp=Question.setTrueAnswer(totalCorrect);
-        // Integer Correctp=Question.setTrueAnswer(questionRepository.findByTrueAnswer(totalCorrect));
 
         model.addAttribute("totalCorrect", totalCorrect);
         model.addAttribute("totalIncorrect", totalIncorrect);

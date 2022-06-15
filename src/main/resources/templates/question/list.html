@@ -10,14 +10,14 @@
                 <div class="justify-content-center">
                     <h3>Test</h3>
                     <table>
-                        <tr th:each="question,iter:${subject.questions}">
+                        <tr th:each="question,iter:${questions}">
                             <td th:text="|${iter.index + 1}. ${question.text}|"></td>
                             <td>
                                 <a th:href="|/question/${question.id}/edit|">edit</a><br>
                             </td>
                             <table class="table">
                                <tr th:each="answer,iter:${question.answers}">
-                                   <input type="radio" th:attr="name=${question.id}" th:value="${answer}">
+                                   <input type="radio" th:attr="name=${question.id}" th:value="${answer.id}">
                                    <label th:text="${answer.text}"></label><br>
                                </tr>
                             </table>
