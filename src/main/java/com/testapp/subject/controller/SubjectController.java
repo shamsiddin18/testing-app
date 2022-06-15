@@ -57,7 +57,7 @@ public class SubjectController {
         model.addAttribute("questions", questions);
         model.addAttribute("answers", answersMap);
 
-        return  "question/list";
+        return  "question/view";
     }
 
     @PostMapping("/testing")
