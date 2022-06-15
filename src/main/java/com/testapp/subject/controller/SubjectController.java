@@ -13,10 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Controller
 public class SubjectController {
@@ -53,9 +50,9 @@ public class SubjectController {
         }
         model.addAttribute("subject", subject);
         List<Question> questions = this.questionRepository.findBySubjectId(subject.getId());
-        HashMap<Integer, List<Answer>> answersMap = new HashMap<Integer, List<Answer>>();
+        HashMap<Integer, Set<Answer>> answersMap = new HashMap<Integer, Set<Answer>>();
         for (Question question: questions) {
-            answersMap.put(question.getId(), this.answerRepository.findByQuestionId(question.getId()));
+            answersMap.put(question.getId(), question.getAnswers());
         }
         model.addAttribute("questions", questions);
         model.addAttribute("answers", answersMap);
@@ -78,17 +75,17 @@ public class SubjectController {
                 totalIncorrect++;
                 continue;
             }
-            questions.put(questionId.toString(), question);
+            questions.put(map.getKey(), question);
             Integer answerId = Integer.parseInt(map.getValue());
-            List<Answer> answers = this.answerRepository.findByQuestionId(questionId);
+            Set<Answer> answers = question.getAnswers();
 
             for (Answer answer : answers) {
                 if (answer.isCorrect()) {
-                    correctAnswers.put(questionId.toString(), answer);
+                    correctAnswers.put(map.getKey(), answer);
                 }
 
                 if (Objects.equals(answer.getId(), answerId)) {
-                    selectedAnswers.put(questionId.toString(), answer);
+                    selectedAnswers.put(map.getKey(), answer);
                     if(answer.isCorrect()) {
                         totalCorrect++;
                         continue;
@@ -97,12 +94,7 @@ public class SubjectController {
                     totalIncorrect++;
                 }
             }
-
-            Answer answer= this.answerRepository.findById(answerId).orElse(null);
         }
-//     Integer Correct = (questionRepository.findByTrueAnswer(totalCorrect));
-        // Integer Correctp=Question.setTrueAnswer(totalCorrect);
-        // Integer Correctp=Question.setTrueAnswer(questionRepository.findByTrueAnswer(totalCorrect));
 
         model.addAttribute("totalCorrect", totalCorrect);
         model.addAttribute("totalIncorrect", totalIncorrect);

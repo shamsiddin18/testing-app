@@ -29,13 +29,13 @@
                             </td>
                             <td>
                                 <div class="input-group mb-3">
-                                    <select class="form-select" id="inputGroupSelect01" th:field="*{subjectId}">
+                                    <select class="form-select" id="inputGroupSelect01" th:field="*{subject}">
                                         <option value="0">Select</option>
                                         <th:block th:each="subject:${subjects}">
                                             <option th:value="${subject.id}" th:text="${subject.title}"></option>
                                         </th:block>
                                     </select><br>
-                                    <span th:if="${#fields.hasErrors('subjectId')}" th:errors="*{subjectId}"></span>
+                                    <span th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}"></span>
                                 </div>
                             </td>
                         </tr>

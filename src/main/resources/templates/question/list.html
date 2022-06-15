@@ -16,10 +16,10 @@
                                 <a th:href="|/question/${question.id}/edit|">edit</a><br>
                             </td>
                             <table class="table">
-                           <tr th:each="answer,iter:${answers.get(question.id)}">
-                               <input type="radio" th:attr="name=${question.id}" th:value="${answer.id}">
-                               <label th:text="${answer.text}"></label><br>
-                           </tr>
+                               <tr th:each="answer,iter:${question.answers}">
+                                   <input type="radio" th:attr="name=${question.id}" th:value="${answer.id}">
+                                   <label th:text="${answer.text}"></label><br>
+                               </tr>
                             </table>
                         </tr>
                         <tr>
