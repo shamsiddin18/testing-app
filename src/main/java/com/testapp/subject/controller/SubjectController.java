@@ -106,7 +106,7 @@ public class SubjectController {
     }
 
     @GetMapping("/subject/add")
-    public String showCreateForm(Model model){
+    public String showCreateForm(Model model) {
         model.addAttribute("subject", new Subject());
         return "subject/add";
     }
@@ -125,7 +125,7 @@ public class SubjectController {
 
 
     @GetMapping("/subject/{id}/edit")
-    public String showEditSubjects(@PathVariable Integer id, Model model){
+    public String showSubjectEditForm(@PathVariable Integer id, Model model) {
         Subject subject = this.repository.findById(id).orElse(null);
         if (subject == null) {
             return "redirect:user/error";
@@ -135,8 +135,8 @@ public class SubjectController {
     }
 
     @PostMapping ("/subject/{id}/edit")
-    public String submitEditingSubject(@Valid Subject subject,BindingResult result,Model model ){
-        if (result.hasErrors()){
+    public String submitSubjectEditForm(@Valid Subject subject,BindingResult result,Model model) {
+        if (result.hasErrors()) {
             model.addAttribute("subject" , subject);
             return "subject/edit";
         }
@@ -144,8 +144,4 @@ public class SubjectController {
         this.subjectService.creatSubject(subject);
         return "redirect:/subjects";
     }
-
-
-
-
 }
