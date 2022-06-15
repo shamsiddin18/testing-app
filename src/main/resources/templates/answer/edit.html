@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
+<head>
+    <title>Register Page</title>
+</head>
+<body>
+    <section layout:fragment="body">
+        <form  action="#"  th:action="|/asnwer/${answer.id}/edit|" th:object="${answer}" method="POST" novalidate>
+            <div class="container">
+                <div class="justify-content-center">
+                    <h3>Edit Answer</h3>
+                    <h2 th:text="${answer.text}"></h2>
+                    <table>
+                        <tr>
+                            <td>Text</td>
+                            <td>
+                                <input type="text" th:field="*{text}" placeholder="answer">
+                                <span th:if="${#fields.hasErrors('text')}" th:errors="*{text}">Text Error</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Question:
+                            </td>
+                            <td>
+                                <select th:field="*{question}">
+                                    <option value="0">Select</option>
+                                    <th:block th:each="question:${questions}">
+                                        <option th:value="${question.id}" th:text="${question.text}"></option>
+                                    </th:block>
+                                </select> <br>
+                                <span th:if="${#fields.hasErrors('question')}" th:errors="*{question}">Subject Error</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Correct(yes/no)</td>
+                            <td>
+                                <select th:field="*{correct}">
+                                    <option value="true">yes</option>
+                                    <option value="false">no</option>
+                                </select> <br>
+                                <span th:if="${#fields.hasErrors('correct')}" th:errors="*{correct}">Text Error</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <input type="submit" name="submit" value="Create"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </section>
+</body>
+</html>

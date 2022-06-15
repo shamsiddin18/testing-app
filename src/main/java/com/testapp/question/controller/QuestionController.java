@@ -30,25 +30,16 @@ public class QuestionController {
         this.questionService = questionService;
     }
 
-
-    @GetMapping("/questions")
-    public String list(Model model){
-        List<Question> questions = this.questionRepository.findAll();
-        model.addAttribute("questions", questions);
-
-        return "question/list";
-    }
-
-
-    @GetMapping("/question/{id}")
-    public String view(Model model, @PathVariable Integer id) {
-        Question question= this.questionRepository.findById(id).orElse(null);
-        if (question == null) {
+    @GetMapping("/subject/{id}/questions")
+    public String viewList(Model model, @PathVariable Integer id) {
+        Subject subject = this.subjectRepository.findById(id).orElse(null);
+        if (subject == null) {
             return "404";
         }
-        model.addAttribute("question", question);
 
-        return  "redirect:/answers";
+        model.addAttribute("subject", subject);
+
+        return  "question/list";
     }
 
     @GetMapping("/question/create")
@@ -56,6 +47,18 @@ public class QuestionController {
         model.addAttribute("subjects", this.getAllSubjects());
 
         return "question/create";
+    }
+
+    @PostMapping("/question/create")
+    public String submitCreateForm(@Valid Question question, BindingResult result, Model model){
+        if (result.hasErrors()) {
+            model.addAttribute("subjects", this.getAllSubjects());
+            return "question/create";
+        }
+
+        questionService.save(question);
+
+        return "redirect:/subject/"+question.getSubject().getId()+"/questions";
     }
 
     @GetMapping("/question/{id}/edit")
@@ -71,30 +74,6 @@ public class QuestionController {
         return "question/edit";
     }
 
-    @GetMapping("/question/{id}/view")
-    public String view(@PathVariable Integer id, Model model){
-        Question question = this.questionRepository.findById(id).orElse(null);
-        if (question == null) {
-            return "404";
-        }
-
-        model.addAttribute("question", question);
-
-        return "question/view";
-    }
-
-    @PostMapping("/question/create")
-    public String submitCreateForm(@Valid Question question, BindingResult result, Model model){
-        if (result.hasErrors()) {
-            model.addAttribute("subjects", this.getAllSubjects());
-            return "question/create";
-        }
-
-        questionService.save(question);
-
-        return "redirect:/subjects";
-    }
-
     @PostMapping("/question/{id}/edit")
     public String submitEditForm(@Valid Question question, BindingResult result, Model model){
         if (result.hasErrors()) {
@@ -105,7 +84,7 @@ public class QuestionController {
 
         this.questionService.save(question);
 
-        return "redirect:/subjects";
+        return "redirect:/subject/"+question.getSubject().getId()+"/questions";
     }
 
     private List<Subject> getAllSubjects()

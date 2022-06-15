@@ -21,7 +21,7 @@
                 <tr th:each="subject:${subjects}">
                     <td th:text="${subject.id}"></td>
                     <td>
-                        <a th:href="@{'/subject/view/'+${subject.id}}" th:text="${subject.title}"></a>
+                        <a th:href="|/subject/${subject.id}/questions|" th:text="${subject.title}"></a>
                     </td>
                     <td>
                         <a th:href="|/subject/${subject.id}/edit|">

@@ -22,9 +22,6 @@ public class Subject {
     @OneToMany(mappedBy = "subject")
     private Set<Question> questions;
 
-
-
-
     public Integer getId() {
         return id;
     }
@@ -39,5 +36,13 @@ public class Subject {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Set<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(Set<Question> questions) {
+        this.questions = questions;
     }
 }
