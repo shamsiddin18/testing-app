@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
+<head>
+    <title>Register Page</title>
+</head>
+<body>
+<section layout:fragment="body">
+    <form  action="#"  th:action="|/subject/${subject.id}/edit|" th:object="${subject}" method="POST" novalidate>
+        <div class="container">
+            <div class="justify-content-center">
+                <h3>Edit Subject</h3>
+
+                <h2 th:text="${subject.title}"></h2>
+                <table>
+                    <tr>
+                        <td>
+                            Text:
+                        </td>
+                        <td>
+                            <div class="col-12">
+                                <div class="input-group has-validation">
+                                    <input type="text" th:field="*{title}" class="form-control is-invalid" aria-describedby="inputGroupPrepend3 validationServerUsernameFeedback" >
+                                    <div id="validationServerUsernameFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="1">
+                            <input type="submit" class="btn btn-primary" name="submit" value="Save"/>
+                        </td>
+
+                        <td colspan="2">
+                            <a href="/subjects" class="btn btn-primary active" role="button" >Cancel</a>
+                        </td>
+                    </tr>
+
+
+                </table>
+            </div>
+        </div>
+    </form>
+</section>
+</body>
+</html>

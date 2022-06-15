@@ -7,22 +7,28 @@
   <section layout:fragment="body">
     <div class="container">
       <h2>Choose your subject</h2>
-      <a th:href="@{'/subject/add'}" class="btn btn-primary">Adding Subjects</a>
+      <a th:href="@{'/subject/add'}" class="btn btn-primary">Add New</a>
       <div class="col-12">
         <table class="table table-hover">
             <thead>
               <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Subjects</th>
+                    <th scope="col" class="col-1">#</th>
+                    <th scope="col" class="col-10">Subjects</th>
+                    <th scope="col" class="col-1"></th>
               </tr>
             </thead>
             <tbody>
-              <tr th:each="subject:${subjects}">
-                <th th:text="${subject.id}"></th>
-                <td>
-                    <a th:href="@{'/subject/view/'+${subject.id}}" th:text="${subject.title}"></a>
-                </td>
-              </tr>
+                <tr th:each="subject:${subjects}">
+                    <td th:text="${subject.id}"></td>
+                    <td>
+                        <a th:href="@{'/subject/view/'+${subject.id}}" th:text="${subject.title}"></a>
+                    </td>
+                    <td>
+                        <a th:href="|/subject/${subject.id}/edit|">
+                            <i class="bi bi-pen"></i>
+                        </a>
+                    </td>
+                </tr>
             </tbody>
         </table>
       </div>

@@ -122,4 +122,30 @@ public class SubjectController {
 
         return "redirect:/subjects";
     }
+
+
+    @GetMapping("/subject/{id}/edit")
+    public String showEditSubjects(@PathVariable Integer id, Model model){
+        Subject subject = this.repository.findById(id).orElse(null);
+        if (subject == null) {
+            return "redirect:user/error";
+        }
+        model.addAttribute("subject", subject);
+        return "subject/edit";
+    }
+
+    @PostMapping ("/subject/{id}/edit")
+    public String submitEditingSubject(@Valid Subject subject,BindingResult result,Model model ){
+        if (result.hasErrors()){
+            model.addAttribute("subject" , subject);
+            return "subject/edit";
+        }
+
+        this.subjectService.creatSubject(subject);
+        return "redirect:/subjects";
+    }
+
+
+
+
 }
