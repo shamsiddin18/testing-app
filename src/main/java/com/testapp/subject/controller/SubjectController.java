@@ -106,7 +106,7 @@ public class SubjectController {
     }
 
     @GetMapping("/subject/add")
-    public String showCreateForm(Model model){
+    public String showCreateForm(Model model) {
         model.addAttribute("subject", new Subject());
         return "subject/add";
     }
@@ -120,6 +120,28 @@ public class SubjectController {
 
         subjectService.creatSubject(subject);
 
+        return "redirect:/subjects";
+    }
+
+
+    @GetMapping("/subject/{id}/edit")
+    public String showSubjectEditForm(@PathVariable Integer id, Model model) {
+        Subject subject = this.repository.findById(id).orElse(null);
+        if (subject == null) {
+            return "redirect:user/error";
+        }
+        model.addAttribute("subject", subject);
+        return "subject/edit";
+    }
+
+    @PostMapping ("/subject/{id}/edit")
+    public String submitSubjectEditForm(@Valid Subject subject,BindingResult result,Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("subject" , subject);
+            return "subject/edit";
+        }
+
+        this.subjectService.creatSubject(subject);
         return "redirect:/subjects";
     }
 }
