@@ -61,7 +61,7 @@ public class AnswerController {
         answerService.create(answer);
 
         // @TODO: Please redirect to question answer list
-        return "redirect:/subjects";
+        return "redirect:/question/"+answer.getQuestion().getSubject().getId()+"/answers";
     }
 
     @GetMapping("/answer/{id}/edit")
