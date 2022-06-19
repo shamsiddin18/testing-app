@@ -19,13 +19,19 @@ import java.util.*;
 public class SubjectController {
     private final SubjectRepository repository;
     private final SubjectService subjectService;
+    private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
 
     public SubjectController(
         SubjectRepository repository,
-        SubjectService subjectService
+        SubjectService subjectService,
+        QuestionRepository questionRepository,
+        AnswerRepository answerRepository
     ) {
         this.repository = repository;
         this.subjectService = subjectService;
+        this.questionRepository = questionRepository;
+        this.answerRepository = answerRepository;
     }
 
     @GetMapping("/subjects")
@@ -74,4 +80,76 @@ public class SubjectController {
         this.subjectService.creatSubject(subject);
         return "redirect:/subjects";
     }
+    @GetMapping("/subject")
+    public String viewSubjectTestList(Model model){
+        List<Subject> subjects = this.repository.findAll();
+        System.out.println("subjects: "+subjects);
+        model.addAttribute("subjects", subjects);
+        return "testing/subjects";
+    }
+
+    @GetMapping("/subject/view/{id}")
+    public String view(Model model, @PathVariable Integer id) {
+        Subject subject = this.repository.findById(id).orElse(null);
+        if (subject == null) {
+            return "404";
+        }
+        model.addAttribute("subject", subject);
+        List<Question> questions = this.questionRepository.findBySubjectId(subject.getId());
+        HashMap<Integer, List<Answer>> answersMap = new HashMap<Integer, List<Answer>>();
+        for (Question question: questions) {
+            answersMap.put(question.getId(), this.answerRepository.findByQuestionId(question.getId()));
+        }
+        model.addAttribute("questions", questions);
+        model.addAttribute("answers", answersMap);
+
+        return  "testing/test";
+    }
+
+    @PostMapping("/testing")
+    public String check(Model model, @RequestParam HashMap<String, String>results){
+        Integer totalCorrect = 0;
+        Integer totalIncorrect = 0;
+        HashMap<String, Answer> correctAnswers = new HashMap<>();
+        HashMap<String, Answer> selectedAnswers = new HashMap<>();
+        HashMap<String, Question> questions = new HashMap<>();
+        for (Map.Entry<String, String> map : results.entrySet()){
+            Integer questionId = Integer.parseInt(map.getKey());
+            Question question = this.questionRepository.findById(questionId).orElse(null);
+            if (question == null) {
+                totalIncorrect++;
+                continue;
+            }
+            questions.put(questionId.toString(), question);
+            Integer answerId = Integer.parseInt(map.getValue());
+            List<Answer> answers = this.answerRepository.findByQuestionId(questionId);
+
+            for (Answer answer : answers) {
+                if (answer.isCorrect()) {
+                    correctAnswers.put(questionId.toString(), answer);
+                }
+
+                if (Objects.equals(answer.getId(), answerId)) {
+                    selectedAnswers.put(questionId.toString(), answer);
+                    if(answer.isCorrect()) {
+                        totalCorrect++;
+                        continue;
+                    }
+
+                    totalIncorrect++;
+                }
+            }
+
+            Answer answer= this.answerRepository.findById(answerId).orElse(null);
+        }
+        model.addAttribute("totalCorrect", totalCorrect);
+        model.addAttribute("totalIncorrect", totalIncorrect);
+        model.addAttribute("questions", questions);
+        model.addAttribute("correctAnswers", correctAnswers);
+        model.addAttribute("selectedAnswers", selectedAnswers);
+
+        return "testing/result";
+    }
+
+
 }
