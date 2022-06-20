@@ -6,35 +6,26 @@
 <body>
   <section layout:fragment="body">
       <div class="justify-content-center">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-              <a th:href="|/subject|">Subjects</a>
-            </li>
-            <li class="breadcrumb-item active" th:text="${subject.title}"></li>
-          </ol>
-        </nav>
         <form  action="/testing" method="post" >
-          <h1>Welcome to Test</h1>
+          <h1 class="text-center">Welcome to Test</h1>
           <table>
             <tr th:each="question,iter:${questions}">
               <td th:text="|${iter.index + 1}. ${question.text}|"></td>
-              <td>
-                <a th:href="|/question/${question.id}/edit|">edit</a>
-              </td>
-              <table>
-                <tr th:each="answer,iter:${answers.get(question.id)}">
-                  <input type="radio" th:attr="name=${question.id}" th:value="${answer.id}">
-                  <label th:text="${answer.text}"></label><br>
+              <table class="form-check">
+                <tr>
+                  <div th:each="answer,iter:${answers.get(question.id)}">
+                    <input type="radio" th:attr="name=${question.id}" th:value="${answer.id}">
+                    <label th:text="${answer.text}"></label><br>
+                  </div>
                 </tr>
               </table>
             </tr>
             <tr>
-              <td >
+              <td>
                 <button type="submit" class="btn btn-primary">Submit</button>
               </td>
               <td>
-                <a href="/subject" class="btn btn-light" role="button" >Cancel</a>
+                <a href="/testing" class="btn btn-light" role="button" >Cancel</a>
               </td>
             </tr>
           </table>

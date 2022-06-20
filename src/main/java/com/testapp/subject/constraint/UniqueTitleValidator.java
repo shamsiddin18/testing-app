@@ -9,7 +9,7 @@ public class UniqueTitleValidator implements ConstraintValidator<UniqueTitleCons
     private final SubjectRepository subjectRepository;
 
     public UniqueTitleValidator(SubjectRepository subjectRepository){
-        this.subjectRepository=subjectRepository;
+        this.subjectRepository = subjectRepository;
     }
 
     @Override
@@ -23,7 +23,7 @@ public class UniqueTitleValidator implements ConstraintValidator<UniqueTitleCons
             return true;
         }
 
-        Subject ss=this.subjectRepository.findFirstByTitle(s).orElse(null);
+        Subject ss = this.subjectRepository.findFirstByTitle(s).orElse(null);
         if (ss == null) {
             return true;
         }

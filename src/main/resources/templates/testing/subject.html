@@ -8,29 +8,21 @@
     <div class="col-12">
         <table class="table table-hover">
             <thead>
-            <tr>
+              <tr>
                 <th scope="col" class="col-1">#</th>
                 <th scope="col" class="col-10">Subjects</th>
-                <th scope="col" class="col-1"></th>
-            </tr>
+              </tr>
             </thead>
             <tbody>
             <tr th:each="subject:${subjects}">
                 <td th:text="${subject.id}"></td>
                 <td>
-                    <a th:href="|/subject/view/${subject.id}|" th:text="${subject.title}"></a>
-                </td>
-                <td>
-                    <a th:href="|/subject/${subject.id}/edit|">
-                        <i class="bi bi-pen"></i>
-                    </a>
+                    <a th:href="|/testing/subject/${subject.id}|" th:text="${subject.title}"></a>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
-
-
 </section>
 </body>
 </html>
