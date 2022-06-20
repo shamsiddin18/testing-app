@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
+<head>
+    <title>Register Page</title>
+</head>
+<body>
+<section layout:fragment="body">
+    <div class="col-12">
+        <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col" class="col-1">#</th>
+                <th scope="col" class="col-10">Subjects</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr th:each="subject:${subjects}">
+                <td th:text="${subject.id}"></td>
+                <td>
+                    <a th:href="|/testing/subject/${subject.id}|" th:text="${subject.title}"></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
+<head>
+  <title>Question view page</title>
+</head>
+<body>
+  <section layout:fragment="body">
+      <div class="justify-content-center">
+        <form  action="/testing" method="post" >
+          <h1 class="text-center">Welcome to Test</h1>
+          <table>
+            <tr th:each="question,iter:${questions}">
+              <td th:text="|${iter.index + 1}. ${question.text}|"></td>
+              <table class="form-check">
+                <tr>
+                  <div th:each="answer,iter:${answers.get(question.id)}">
+                    <input type="radio" th:attr="name=${question.id}" th:value="${answer.id}">
+                    <label th:text="${answer.text}"></label><br>
+                  </div>
+                </tr>
+              </table>
+            </tr>
+            <tr>
+              <td>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </td>
+              <td>
+                <a href="/testing" class="btn btn-light" role="button" >Cancel</a>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+  </section>
+</body>
+</html>

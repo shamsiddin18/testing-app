@@ -21,7 +21,7 @@ public class Answer {
     boolean correct;
 
     @ManyToOne
-    @JoinColumn(name="question_id", nullable=false)
+    @JoinColumn(name="question_id", nullable = false)
     private Question question;
 
     public Integer getId() {

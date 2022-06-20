@@ -5,6 +5,18 @@
 </head>
 <body>
     <section layout:fragment="body">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a th:href="|/subjects|">Subjects</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a th:href="|/subject/${question.subject.id}/questions|" th:text="${question.subject.title}"></a>
+                </li>
+                <li class="breadcrumb-item active" th:text="${question.text}"></li>
+            </ol>
+        </nav>
+        <a th:href="@{'/answer/create'}" class="btn btn-primary">Add New</a>
        <table class="table table-hover">
            <thead>
                <tr>

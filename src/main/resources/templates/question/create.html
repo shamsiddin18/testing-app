@@ -21,14 +21,10 @@
                 </select><br>
                 <span th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}"></span>
             </div>
-            <div class="col-auto">
+            <div class="col-auto-1">
                 <button type="submit" class="btn btn-primary">Submit</button>
                 <a href="/subjects" class="btn btn-light" role="button" >Cancel</a>
             </div>
-
-
-
-
         </form>
     </section>
 </body>

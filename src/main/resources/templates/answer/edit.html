@@ -5,11 +5,11 @@
 </head>
 <body>
     <section layout:fragment="body">
-        <div class="container">
-            <div class="row justify-content-md-center">
-
-                <form action="#"  th:action="@{/answer/create}" method="POST" th:object="${answer}">
-                    <h2>Adding Answer</h2>
+        <form  action="#"  th:action="|/answer/${answer.id}/edit|" th:object="${answer}" method="POST" novalidate>
+            <div class="container">
+                <div class="justify-content-center">
+                    <h3>Edit Answer</h3>
+                    <h2 th:text="${answer.text}"></h2>
                     <table>
                         <tr>
                             <td>Text</td>
@@ -42,20 +42,18 @@
                                 <span th:if="${#fields.hasErrors('correct')}" th:errors="*{correct}">Text Error</span>
                             </td>
                         </tr>
-
                         <tr>
                             <td colspan="1">
-                                <input type="submit" class="btn btn-primary" name="submit" value="Submit"/>
+                                <input type="submit" class="btn btn-primary" name="submit" value="Save"/>
                             </td>
                             <td colspan="2">
-                                <a href="/subjects" class="btn btn-light" role="button" >Cancel</a>
+                                <a th:href="|/question/${answer.question.id}/answers|" class="btn btn-light" role="button" >Cancel</a>
                             </td>
                         </tr>
                     </table>
-                </form>
+                </div>
             </div>
-        </div>
-
+        </form>
     </section>
 </body>
 </html>
