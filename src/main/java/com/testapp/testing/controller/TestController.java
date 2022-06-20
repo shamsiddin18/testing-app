@@ -13,10 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import javax.validation.Valid;
+import java.util.*;
 
 @Controller
 public class TestController {
@@ -47,20 +45,23 @@ public class TestController {
         if (subject == null) {
             return "404";
         }
+        Set<Question> questions = this.questionRepository.findBySubjectId(subject.getId());
+        /*
+          STEPS:
+           - [ ] Insert single record into testing table with: user_id, subject_id, start_time (DateTime) and get testing.id
+           - [ ] Insert multiple records into testing_question table with: testing_id, question_id, i.e.
+                for (question : questions) {
+                    insert into testing_question(testing.id, question.id)
+                }
+         */
         model.addAttribute("subject", subject);
-        List<Question> questions = this.questionRepository.findBySubjectId(subject.getId());
-        HashMap<Integer, List<Answer>> answersMap = new HashMap<Integer, List<Answer>>();
-        for (Question question: questions) {
-            answersMap.put(question.getId(), this.answerRepository.findByQuestionId(question.getId()));
-        }
         model.addAttribute("questions", questions);
-        model.addAttribute("answers", answersMap);
 
         return  "testing/test";
     }
 
     @PostMapping("/testing")
-    public String check(Model model, @RequestParam HashMap<String, String>results){
+    public String check(Model model,@RequestParam HashMap<String, String>results){
         Integer totalCorrect = 0;
         Integer totalIncorrect = 0;
         HashMap<String, Answer> correctAnswers = new HashMap<>();
@@ -95,6 +96,7 @@ public class TestController {
 
             Answer answer= this.answerRepository.findById(answerId).orElse(null);
         }
+
         model.addAttribute("totalCorrect", totalCorrect);
         model.addAttribute("totalIncorrect", totalIncorrect);
         model.addAttribute("questions", questions);

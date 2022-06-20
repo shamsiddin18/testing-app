@@ -13,7 +13,7 @@
               <td th:text="|${iter.index + 1}. ${question.text}|"></td>
               <table class="form-check">
                 <tr>
-                  <div th:each="answer,iter:${answers.get(question.id)}">
+                  <div th:each="answer,iter:${question.answers}" >
                     <input type="radio" th:attr="name=${question.id}" th:value="${answer.id}">
                     <label th:text="${answer.text}"></label><br>
                   </div>
