@@ -4,8 +4,6 @@ package com.testapp.testing.model;
 import com.testapp.question.model.Question;
 import com.testapp.subject.model.Subject;
 import com.testapp.user.model.UserModel;
-import org.springframework.core.annotation.Order;
-
 import javax.persistence.*;
 import java.util.*;
 
