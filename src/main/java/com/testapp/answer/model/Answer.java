@@ -21,6 +21,7 @@ public class Answer {
     boolean correct;
 
     @ManyToOne
+    @OrderBy
     @JoinColumn(name="question_id", nullable = false)
     private Question question;
 

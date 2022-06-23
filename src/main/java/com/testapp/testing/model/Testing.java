@@ -4,7 +4,6 @@ package com.testapp.testing.model;
 import com.testapp.question.model.Question;
 import com.testapp.subject.model.Subject;
 import com.testapp.user.model.UserModel;
-
 import javax.persistence.*;
 import java.util.*;
 
@@ -27,6 +26,7 @@ public class Testing {
     private Date createdAt;
 
     @OneToMany(cascade={CascadeType.ALL})
+    @OrderBy
     @JoinTable(name="testing_question",
             joinColumns={@JoinColumn(name="testing_id", referencedColumnName="id")},
             inverseJoinColumns={@JoinColumn(name="question_id", referencedColumnName="id")})
