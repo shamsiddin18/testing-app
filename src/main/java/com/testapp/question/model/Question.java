@@ -24,6 +24,7 @@ public class Question {
     private Subject subject;
 
     @OneToMany(mappedBy="question")
+    @OrderBy
     private Set<Answer> answers;
 
     public Integer getId() {

@@ -20,6 +20,7 @@ public class Subject {
     private String title;
 
     @OneToMany(mappedBy = "subject")
+    @OrderBy
     private Set<Question> questions;
 
     public Integer getId() {
