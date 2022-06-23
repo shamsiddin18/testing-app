@@ -71,10 +71,6 @@ public class TestController {
 
     @GetMapping("/testing/{id}")
     public String testing(@PathVariable Integer id, Model model) {
-        /*
-          STEPS:
-           -
-         */
         Testing testing = testingService.find(id);
         if (testing == null) {
             return "error";
