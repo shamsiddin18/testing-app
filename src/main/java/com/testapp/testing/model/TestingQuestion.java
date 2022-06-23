@@ -21,9 +21,8 @@ public class TestingQuestion {
     private Question question;
 
     @ManyToOne
-    @JoinColumn(name = "answer_id", nullable = true)
+    @JoinColumn(name = "answer_id", unique = false)
     private Answer answer;
-
 
     public Integer getId() {
         return id;

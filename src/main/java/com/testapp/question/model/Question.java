@@ -4,9 +4,7 @@ import com.testapp.answer.model.Answer;
 import com.testapp.subject.model.Subject;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
@@ -15,10 +13,10 @@ import java.util.Set;
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Integer id;
+
     @NotEmpty(message = "Question can not be empty")
-    @Size(min=3,max=1000)
+    @Size(min = 3, max = 1000)
     private String text;
 
     @ManyToOne

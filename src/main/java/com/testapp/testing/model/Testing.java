@@ -1,11 +1,12 @@
 package com.testapp.testing.model;
 
 
+import com.testapp.question.model.Question;
 import com.testapp.subject.model.Subject;
 import com.testapp.user.model.UserModel;
 
 import javax.persistence.*;
-import java.util.TimeZone;
+import java.util.*;
 
 @Entity
 @Table(name="testing")
@@ -15,14 +16,25 @@ public class Testing {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, unique = false)
     private UserModel user;
 
     @ManyToOne
-    @JoinColumn(name = "subject_id", nullable = false)
+    @JoinColumn(name = "subject_id", nullable = false, unique = false)
     private Subject subject;
 
-    private TimeZone time;
+    @Column(name = "created_at", nullable = false)
+    private Date createdAt;
+
+    @OneToMany(cascade={CascadeType.ALL})
+    @JoinTable(name="testing_question",
+            joinColumns={@JoinColumn(name="testing_id", referencedColumnName="id")},
+            inverseJoinColumns={@JoinColumn(name="question_id", referencedColumnName="id")})
+    private Set<Question> questions;
+
+    public Testing() {
+        this.questions = new HashSet<Question>();
+    }
 
     public Integer getId() {
         return id;
@@ -48,11 +60,23 @@ public class Testing {
         this.subject = subject;
     }
 
-    public TimeZone getTime() {
-        return time;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setTime(TimeZone time) {
-        this.time = time;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Set<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(Set<Question> questions) {
+        this.questions = questions;
+    }
+
+    public void addQuestion(Question question) {
+        this.questions.add(question);
     }
 }
