@@ -1,6 +1,5 @@
 package com.testapp.testing.model;
 
-
 import com.testapp.question.model.Question;
 import com.testapp.subject.model.Subject;
 import com.testapp.user.model.UserModel;
@@ -8,7 +7,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name="testing")
+@Table(name = "testing")
 public class Testing {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,12 +24,18 @@ public class Testing {
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
-    @OneToMany(cascade={CascadeType.ALL})
+    @OneToMany(cascade = { CascadeType.ALL })
     @OrderBy
-    @JoinTable(name="testing_question",
-            joinColumns={@JoinColumn(name="testing_id", referencedColumnName="id")},
-            inverseJoinColumns={@JoinColumn(name="question_id", referencedColumnName="id")})
+    @JoinTable(name = "testing_question", joinColumns = {
+            @JoinColumn(name = "testing_id", referencedColumnName = "id") }, inverseJoinColumns = {
+                    @JoinColumn(name = "question_id", referencedColumnName = "id") })
     private Set<Question> questions;
+
+    @Column(name="ended_at", nullable = true)
+    private Date endedAt;
+
+    @Column(name="total_score", nullable = true)
+    private Integer score;
 
     public Testing() {
         this.questions = new HashSet<Question>();
@@ -78,5 +83,21 @@ public class Testing {
 
     public void addQuestion(Question question) {
         this.questions.add(question);
+    }
+
+    public Date getEndedAt() {
+        return endedAt;
+    }
+
+    public void setEndedAt(Date endedAt) {
+        this.endedAt = endedAt;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
     }
 }

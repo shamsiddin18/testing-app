@@ -8,14 +8,14 @@ import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
-@Table(name="subject")
+@Table(name = "subject")
 public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     private Integer id;
+    private Integer id;
 
     @NotEmpty(message = "Subject cannot be empty")
-    @Size(min=4,max = 64)
+    @Size(min = 4, max = 64)
     @UniqueTitleConstraint
     private String title;
 

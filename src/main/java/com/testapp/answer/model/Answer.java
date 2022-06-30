@@ -7,14 +7,14 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name="answer")
+@Table(name = "answer")
 public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
     @NotNull
-    @Size(min=3,max=1000)
+    @Size(min = 3, max = 1000)
     String text;
 
     @Column(name = "is_correct")
@@ -22,7 +22,7 @@ public class Answer {
 
     @ManyToOne
     @OrderBy
-    @JoinColumn(name="question_id", nullable = false)
+    @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
     public Integer getId() {

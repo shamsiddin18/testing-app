@@ -6,16 +6,21 @@
 <body>
   <section layout:fragment="body">
       <div class="justify-content-center">
-        <form  action="/testing" method="post" >
+        <form th:action="|/testing/${testing.id}|" method="post">
           <h1 class="text-center">Welcome to Test</h1>
           <table>
             <tr th:each="question,iter:${questions}">
               <td th:text="|${iter.index + 1}. ${question.text}|"></td>
               <table class="form-check">
                 <tr>
-                  <div th:each="answer,iter:${question.answers}" >
-                    <input type="radio" th:attr="name=${question.id}" th:value="${answer.id}">
-                    <label th:text="${answer.text}"></label><br>
+                  <div class="form-check" th:each="answer,iter:${question.answers}" >
+                    <input
+                      type="radio"
+                      th:attr="name=${question.id}, class=${answer.correct}"
+                      th:value="${answer.id}"
+                      required
+                    >
+                    <label th:text="${answer.text}" class="form-check-label"></label><br>
                   </div>
                 </tr>
               </table>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
+<head>
+  <title>Register Page</title>
+</head>
+<body>
+<section layout:fragment="body">
+  <div class="container">
+    <div class="justify-content-center">
+      <h1 class="text-center">Welcome to Test</h1>
+      <table>
+        <tr th:each="question,iter:${testing.questions}">
+          <td th:text="|${iter.index + 1}. ${question.text}|"></td>
+          <table>
+            <tr>
+              <div th:each="answer:${question.answers}">
+                <div class="form-check" th:if="${submittedAnswers.containsKey(answer.id)}">
+                  <input
+                    type="radio"
+                    th:attr="name=${question.id}, class=${answer.correct ? 'form-check-input is-valid' : 'form-check-input is-invalid'}"
+                    th:value="${answer.id}"
+                    checked="checked"
+                    required
+                  >
+                  <label th:text="${answer.text}" class="form-check-label"></label><br>
+                </div>
+                <div class="form-check" th:if="${!submittedAnswers.containsKey(answer.id)}">
+                  <input
+                          type="radio"
+                          th:attr="name=${question.id}, class=${answer.correct ? 'form-check-input is-valid' : 'form-check-input'}"
+                          th:value="${answer.id}"
+                          required
+                  >
+                  <label th:text="${answer.text}" class="form-check-label"></label><br>
+                </div>
+              </div>
+              <div class="text-warning" th:if="${!submittedQuestions.containsKey(question.id)}">Not answered</div>
+            </tr>
+          </table>
+          <br>
+        </tr>
+        <tr>
+          <td>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </td>
+          <td>
+            <a href="/testing" class="btn btn-light" role="button" >Cancel</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</section>
+</body>
+</html>

@@ -2,11 +2,11 @@ package com.testapp.testing.model;
 
 import com.testapp.answer.model.Answer;
 import com.testapp.question.model.Question;
-
+import com.testapp.testing.constraint.AnswerConstraint;
 import javax.persistence.*;
 
 @Entity
-@Table(name="testing_question")
+@Table(name = "testing_question")
 public class TestingQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,4 +55,5 @@ public class TestingQuestion {
     public void setAnswer(Answer answer) {
         this.answer = answer;
     }
+
 }

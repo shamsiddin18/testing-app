@@ -16,21 +16,47 @@
                     </tr>
                     <tr>
                         <td>
-                            <h2>Answers:</h2><br/>
+                            <h2>Answered questions:</h2>
                             <table>
-                                <tr th:each="map:${questions}">
+                                <tr th:each="question:${answered}">
                                     <td>
-                                        <label th:text="|question: ${map.value.text}|"></label><br>
-                                        <span th:if="${selectedAnswers.get(map.key).correct}">
-                                            <label th:text="|  Answer: ${correctAnswers.get(map.key).text}|"></label>
-                                        </span>
+
+                                        <label th:text="|question: ${question.text}|"></label><br/>
+<!--                                        <span th:if="${correctAnswers.get(question.id)}">-->
+<!--                                            <label th:text="|  Answer: ${correctAnswers.get(question.id)?.text}|"></label>-->
+<!--                                        </span>-->
                                         <div class="col-12">
-                                            <span th:unless="${selectedAnswers.get(map.key).correct}" >
-                                                <label th:text="|  Selected answer: ${selectedAnswers.get(map.key).text}|"></label><br>
-                                                <label th:text="|  Correct answer: ${correctAnswers.get(map.key).text}|"></label>
-                                            </span> 
+                                            <ul th:if="${!selectedAnswers.get(question.id)?.correct}">
+                                                <li>
+                                                    Selected answer:
+                                                    <span th:text="|${selectedAnswers.get(question.id)?.text}|"></span>
+                                                </li>
+                                                <li>
+                                                    Correct answer:
+                                                    <span th:text="|${correctAnswers.get(question.id)?.text}|"></span>
+                                                </li>
+                                            </ul>
+                                            <ul th:unless="${correctAnswers.get(question.id)}">
+                                                <li>
+                                                    Correct answer:
+                                                    <span th:text="|${correctAnswers.get(question.id)?.text}|"></span>
+                                                </li>
+                                            </ul>
                                         </div>
                                         <br>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr><td>&nbsp;</td></tr>
+                    <tr>
+                        <td>
+                            <h2>Not answered questions:</h2>
+                            <table>
+                                <tr th:each="question:${notAnswered}">
+                                    <td>
+                                        <label th:text="|question: ${question.text}|"></label><br>
                                     </td>
                                 </tr>
                             </table>
