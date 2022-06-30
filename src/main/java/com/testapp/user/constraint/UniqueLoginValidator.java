@@ -13,7 +13,8 @@ public class UniqueLoginValidator implements ConstraintValidator<UniqueLoginCons
     }
 
     @Override
-    public void initialize(UniqueLoginConstraint constraint) {}
+    public void initialize(UniqueLoginConstraint constraint) {
+    }
 
     @Override
     public boolean isValid(String field, ConstraintValidatorContext context) {
@@ -25,8 +26,6 @@ public class UniqueLoginValidator implements ConstraintValidator<UniqueLoginCons
         if (user == null) {
             return true;
         }
-
-
 
         return false;
     }

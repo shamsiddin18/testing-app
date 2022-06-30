@@ -15,24 +15,24 @@ import javax.validation.Valid;
 public class UserController {
     private final UserService userService;
 
-    public UserController(UserService userService){
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("/register")
-    public String showRegisterForm(Model model){
+    public String showRegisterForm(Model model) {
         model.addAttribute("userModel", new UserModel());
         return "user/register";
     }
 
     @GetMapping("/")
-    public String homePage(Authentication authentication, Model model){
+    public String homePage(Authentication authentication, Model model) {
         model.addAttribute("userLogin", authentication.getName());
         return "user/home";
     }
 
     @PostMapping("/register")
-    public String submitRegisterForm(@Valid UserModel userModel, BindingResult result){
+    public String submitRegisterForm(@Valid UserModel userModel, BindingResult result) {
         if (result.hasErrors()) {
             return "user/register";
         }
@@ -41,7 +41,5 @@ public class UserController {
 
         return "user/login";
     }
-
-
 
 }

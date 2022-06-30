@@ -1,4 +1,4 @@
-package com.testapp.testing.service;
+package com.testapp.testing.Service;
 
 import com.testapp.testing.model.Testing;
 import com.testapp.testing.repository.TestingRepository;
@@ -12,7 +12,7 @@ public class TestingService {
         this.testRepository = testRepository;
     }
 
-    public void save(Testing model) {
+    public void create(Testing model) {
         testRepository.save(model);
     }
 

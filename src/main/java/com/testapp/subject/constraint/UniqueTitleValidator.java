@@ -5,10 +5,10 @@ import com.testapp.subject.repository.SubjectRepository;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class UniqueTitleValidator implements ConstraintValidator<UniqueTitleConstraint,String> {
+public class UniqueTitleValidator implements ConstraintValidator<UniqueTitleConstraint, String> {
     private final SubjectRepository subjectRepository;
 
-    public UniqueTitleValidator(SubjectRepository subjectRepository){
+    public UniqueTitleValidator(SubjectRepository subjectRepository) {
         this.subjectRepository = subjectRepository;
     }
 

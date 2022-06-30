@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 public class SubjectService {
     private SubjectRepository subjectRepository;
 
-    public SubjectService(SubjectRepository subjectRepository){
-        this.subjectRepository=subjectRepository;
+    public SubjectService(SubjectRepository subjectRepository) {
+        this.subjectRepository = subjectRepository;
     }
 
     public Subject creatSubject(Subject subject) {

@@ -4,42 +4,66 @@
     <title>Register Page</title>
 </head>
 <body>
-<section layout:fragment="body">
-    <div class="container">
-        <div class="justify-content-center">
-            <h1 class="text-center">Results</h1>
-            <table>
-                <tr th:each="testingQuestion,iter:${testing.testingQuestions}">
-                    <td th:text="|${iter.index + 1}. ${testingQuestion.question.text}|"></td>
-                    <table>
-                        <tr>
-                            <div th:each="answer:${testingQuestion.question.answers}">
-                                <div class="form-check" th:if="${submittedAnswers.containsKey(answer.id)}">
-                                    <input
-                                            type="radio"
-                                            th:attr="name=${testingQuestion.question.id}, class=${answer.correct ? 'form-check-input is-valid' : 'form-check-input is-invalid'}"
-                                            th:value="${answer.id}"
-                                            checked="checked"
-                                            required
-                                    >
-                                    <label th:text="${answer.text}" class="form-check-label"></label><br>
-                                </div>
-                                <div class="form-check" th:if="${!submittedAnswers.containsKey(answer.id)}">
-                                    <input
-                                            type="radio"
-                                            th:attr="name=${testingQuestion.question.id}, class=${answer.correct ? 'form-check-input is-valid' : 'form-check-input'}"
-                                            th:value="${answer.id}"
-                                            required
-                                    >
-                                    <label th:text="${answer.text}" class="form-check-label"></label><br>
-                                </div>
-                            </div>
-                            <div class="text-warning" th:if="${!submittedQuestions.containsKey(testingQuestion.question.id)}">Not answered</div>
-                        </tr>
-                    </table>
-                    <br>
-                </tr>
-            </table>
+    <section layout:fragment="body">
+        <div class="container">
+            <div class="justify-content-center">
+                <table>
+                    <tr>
+                        <td th:text="|Total correct answers: ${totalCorrect}|"></td>
+                    </tr>
+                    <tr>
+                        <td th:text="|Total incorrect answers: ${totalIncorrect}|"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h2>Answered questions:</h2>
+                            <table>
+                                <tr th:each="question:${answered}">
+                                    <td>
+
+                                        <label th:text="|question: ${question.text}|"></label><br/>
+<!--                                        <span th:if="${correctAnswers.get(question.id)}">-->
+<!--                                            <label th:text="|  Answer: ${correctAnswers.get(question.id)?.text}|"></label>-->
+<!--                                        </span>-->
+                                        <div class="col-12">
+                                            <ul th:if="${!selectedAnswers.get(question.id)?.correct}">
+                                                <li>
+                                                    Selected answer:
+                                                    <span th:text="|${selectedAnswers.get(question.id)?.text}|"></span>
+                                                </li>
+                                                <li>
+                                                    Correct answer:
+                                                    <span th:text="|${correctAnswers.get(question.id)?.text}|"></span>
+                                                </li>
+                                            </ul>
+                                            <ul th:unless="${correctAnswers.get(question.id)}">
+                                                <li>
+                                                    Correct answer:
+                                                    <span th:text="|${correctAnswers.get(question.id)?.text}|"></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <br>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr><td>&nbsp;</td></tr>
+                    <tr>
+                        <td>
+                            <h2>Not answered questions:</h2>
+                            <table>
+                                <tr th:each="question:${notAnswered}">
+                                    <td>
+                                        <label th:text="|question: ${question.text}|"></label><br>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 </section>

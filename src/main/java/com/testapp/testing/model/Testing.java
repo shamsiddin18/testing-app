@@ -1,5 +1,6 @@
 package com.testapp.testing.model;
 
+import com.testapp.question.model.Question;
 import com.testapp.subject.model.Subject;
 import com.testapp.user.model.UserModel;
 import javax.persistence.*;
@@ -24,15 +25,12 @@ public class Testing {
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
-    @OneToMany(mappedBy = "testing", cascade = { CascadeType.ALL })
+    @OneToMany(cascade = { CascadeType.ALL })
     @OrderBy
-    private Set<TestingQuestion> testingQuestions;
-
-    @Column(name = "ended_at")
-    private Date endedAt;
-
-    @Column(name="total_score")
-    private Integer score;
+    @JoinTable(name = "testing_question", joinColumns = {
+            @JoinColumn(name = "testing_id", referencedColumnName = "id") }, inverseJoinColumns = {
+                    @JoinColumn(name = "question_id", referencedColumnName = "id") })
+    private Set<Question> questions;
 
     public Testing() {
         this.testingQuestions = new HashSet<>();

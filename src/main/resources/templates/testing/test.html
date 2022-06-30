@@ -13,9 +13,14 @@
               <td th:text="|${iter.index + 1}. ${testingQuestion.question.text}|"></td>
               <table class="form-check">
                 <tr>
-                  <div th:each="answer,iter:${testingQuestion.question.answers}" >
-                    <input type="radio" th:attr="name=${testingQuestion.question.id}" th:value="${answer.id}">
-                    <label th:text="${answer.text}"></label><br>
+                  <div class="form-check" th:each="answer,iter:${question.answers}" >
+                    <input
+                      type="radio"
+                      th:attr="name=${question.id}, class=${answer.correct ? 'form-check-input is-invalid' : 'form-check-input'}"
+                      th:value="${answer.id}"
+                      required
+                    >
+                    <label th:text="${answer.text}" class="form-check-label"></label><br>
                   </div>
                 </tr>
               </table>

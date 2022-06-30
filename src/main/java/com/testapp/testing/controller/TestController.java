@@ -8,16 +8,19 @@ import com.testapp.subject.model.Subject;
 import com.testapp.subject.repository.SubjectRepository;
 import com.testapp.testing.model.Testing;
 import com.testapp.testing.model.TestingQuestion;
-import com.testapp.testing.service.TestingService;
+import com.testapp.testing.repository.TestingQuestionRepository;
+import com.testapp.testing.repository.TestingRepository;
 import com.testapp.user.model.UserModel;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.*;
 
 @Controller
@@ -26,16 +29,23 @@ public class TestController {
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
     private final TestingService testingService;
+    private final TestingQuestionRepository testingQuestionRepository;
+    private  final TestingRepository testingRepository;
 
     public TestController(
-            SubjectRepository subjectRepository,
-            AnswerRepository answerRepository,
-            QuestionRepository questionRepository,
-            TestingService testingService) {
+        SubjectRepository subjectRepository,
+        AnswerRepository answerRepository,
+        QuestionRepository questionRepository,
+        TestingService testingService,
+        TestingQuestionRepository testingQuestionRepository,
+        TestingRepository testingRepository
+    ){
         this.answerRepository = answerRepository;
         this.questionRepository = questionRepository;
         this.subjectRepository = subjectRepository;
         this.testingService = testingService;
+        this.testingQuestionRepository=testingQuestionRepository;
+        this.testingRepository=testingRepository;
     }
 
     @GetMapping("/testing")
@@ -64,13 +74,12 @@ public class TestController {
         testing.setSubject(subject);
         testing.setCreatedAt(new Date());
         for (Question question : questions) {
-            if (question.getAnswers().size() == 0) {
+            // TODO: try to use 1 query to get all questions
+            if (question.getAnswers().size() <= 1) {
                 continue;
             }
-            TestingQuestion testingQuestion = new TestingQuestion();
-            testingQuestion.setTesting(testing);
-            testingQuestion.setQuestion(question);
-            testing.addTestingQuestion(testingQuestion);
+
+            testing.addQuestion(question);
         }
 
         this.testingService.save(testing);
@@ -86,37 +95,49 @@ public class TestController {
         }
 
         model.addAttribute("testing", testing);
+        model.addAttribute("subject", testing.getSubject());
+        model.addAttribute("questions", testing.getQuestions());
 
-        return "testing/test";
+        return  "testing/test";
     }
 
     @PostMapping("/testing/{id}")
-    public String check(Model model, @PathVariable Integer id, @RequestParam HashMap<String, String> results) {
-        Testing testing = this.testingService.find(id);
-        if (testing == null) {
-            return "error";
+    public String check(Model model, @PathVariable Integer id, @RequestParam HashMap<String, String>results){
+        Testing test= this.testingRepository.findById(id).orElse(null);
+        if(test == null){
+            return  "error";
         }
 
         Integer totalCorrect = 0;
-        Integer totalIncorrect = testing.getTestingQuestions().size();
+        Integer totalIncorrect = test.getQuestions().size();
+        HashMap<Integer, Answer> correctAnswers = new HashMap<>();
         HashMap<Integer, Answer> submittedAnswers = new HashMap<>();
-        HashMap<Integer, Question> submittedQuestions = new HashMap<>();
-        Set<TestingQuestion> testingQuestions = testing.getTestingQuestions();
-        for (TestingQuestion testingQuestion : testingQuestions) {
+        Set<Question> answered = new HashSet<>();
+        Set<Question> notAnswered = new HashSet<>();
+        Set<Question> questions = test.getQuestions();
+        for (Question question : questions) {
+            for (Answer answer : question.getAnswers()) {
+                if (answer.isCorrect()) {
+                    correctAnswers.put(question.getId(), answer);
+                }
+            }
+
+            boolean found = false;
             for (Map.Entry<String, String> map : results.entrySet()) {
                 String key = map.getKey();
                 String val = map.getValue();
                 Integer questionId = Integer.parseInt(key);
-                if (!questionId.equals(testingQuestion.getId())) {
+                if (!questionId.equals(question.getId())) {
                     continue;
                 }
 
+                found = true;
+                answered.add(question);
+
                 Integer answerId = Integer.parseInt(val);
-                for (Answer answer : testingQuestion.getQuestion().getAnswers()) {
+                for (Answer answer : question.getAnswers()) {
                     if (answer.getId().equals(answerId)) {
                         submittedAnswers.put(answer.getId(), answer);
-                        submittedQuestions.put(questionId, testingQuestion.getQuestion());
-                        testingQuestion.setAnswer(answer);
                         if (answer.isCorrect()) {
                             totalCorrect++;
                             totalIncorrect--;
@@ -125,17 +146,65 @@ public class TestController {
                     }
                 }
             }
+
+            if (!found) {
+                notAnswered.add(question);
+            }
         }
 
-        testing.setEndedAt(new Date());
-        testing.setScore(totalCorrect);
-        this.testingService.save(testing);
+//        Question question =this.questionRepository.findById(id).orElse(null);
+//        Integer totalCorrect = 0;
+//        Integer totalIncorrect = 0;
+//        HashMap<String, Answer> correctAnswers = new HashMap<>();
+//        HashMap<String, Answer> selectedAnswers = new HashMap<>();
+//        HashMap<String, Question> questions = new HashMap<>();
 
-        model.addAttribute("submittedAnswers", submittedAnswers);
-        model.addAttribute("submittedQuestions", submittedQuestions);
-        model.addAttribute("testing", testing);
+//        for (Map.Entry<String, String> map : results.entrySet()){
+//            Integer questionId = Integer.parseInt(map.getKey());
+//            Integer answerId = Integer.parseInt(map.getValue());
+//            List<Answer> answers = this.answerRepository.findByQuestionId(questionId);
+//            for (Answer answer : answers) {
+//                if (answer.isCorrect()) {
+//                    correctAnswers.put(questionId.toString(), answer);
+//                }
+//
+//                if (Objects.equals(answer.getId(), answerId)) {
+//                    selectedAnswers.put(questionId.toString(), answer);
+//                    if(answer.isCorrect()) {
+//                        totalCorrect++;
+//                        continue;
+//                    }
+//
+//                    totalIncorrect++;
+//                }
+//            }
+//        }
 
-        return "testing/result";
+        model.addAttribute("totalCorrect", totalCorrect);
+        model.addAttribute("totalIncorrect", totalIncorrect);
+        model.addAttribute("answered", answered);
+        model.addAttribute("notAnswered", notAnswered);
+        model.addAttribute("correctAnswers", correctAnswers);
+        model.addAttribute("selectedAnswers", submittedAnswers);
+        model.addAttribute("testing", test);
+        model.addAttribute("subject", test.getSubject());
+        model.addAttribute("questions", test.getQuestions());
+
+        return "testing/testing07";
     }
+
+//    @GetMapping("/testing/view")
+//    public String testingView(@PathVariable Integer id, Model model) {
+//        Testing testing = testingService.find(id);
+//        if (testing == null) {
+//            return "error";
+//        }
+//
+//        model.addAttribute("testing", testing);
+//        model.addAttribute("subject", testing.getSubject());
+//        model.addAttribute("questions", testing.getQuestions());
+//
+//        return  "testing/testing07";
+//    }
 
 }

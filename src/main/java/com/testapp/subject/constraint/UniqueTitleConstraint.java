@@ -1,6 +1,5 @@
 package com.testapp.subject.constraint;
 
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
@@ -11,6 +10,8 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UniqueTitleConstraint {
     String message() default "Subject should be unique";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

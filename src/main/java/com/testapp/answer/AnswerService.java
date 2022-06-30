@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 public class AnswerService {
     private AnswerRepository answerRepository;
 
-    public AnswerService(AnswerRepository answerRepository){
-        this.answerRepository=answerRepository;
+    public AnswerService(AnswerRepository answerRepository) {
+        this.answerRepository = answerRepository;
     }
 
-    public Answer create(Answer answer){
+    public Answer create(Answer answer) {
         return answerRepository.save(answer);
     }
 }
