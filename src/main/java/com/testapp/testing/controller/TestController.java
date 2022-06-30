@@ -8,6 +8,7 @@ import com.testapp.subject.model.Subject;
 import com.testapp.subject.repository.SubjectRepository;
 import com.testapp.testing.Service.TestingService;
 import com.testapp.testing.model.Testing;
+import com.testapp.testing.model.TestingQuestion;
 import com.testapp.user.model.UserModel;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -21,17 +22,16 @@ import java.util.*;
 
 @Controller
 public class TestController {
-    private  final SubjectRepository subjectRepository;
+    private final SubjectRepository subjectRepository;
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
     private final TestingService testingService;
 
     public TestController(
-        SubjectRepository subjectRepository,
-        AnswerRepository answerRepository,
-        QuestionRepository questionRepository,
-        TestingService testingService
-    ){
+            SubjectRepository subjectRepository,
+            AnswerRepository answerRepository,
+            QuestionRepository questionRepository,
+            TestingService testingService) {
         this.answerRepository = answerRepository;
         this.questionRepository = questionRepository;
         this.subjectRepository = subjectRepository;
@@ -39,7 +39,7 @@ public class TestController {
     }
 
     @GetMapping("/testing")
-    public String viewSubjectTestList(Model model){
+    public String viewSubjectTestList(Model model) {
         model.addAttribute("subjects", this.subjectRepository.findAll());
 
         return "testing/subject";
@@ -53,20 +53,26 @@ public class TestController {
         }
         Set<Question> questions = this.questionRepository.findBySubjectId(subject.getId());
         /*
-          STEPS:
-           - Insert single record into testing table with: user_id, subject_id, created_at (DateTime)
-           - Insert multiple records into testing_question table with: testing_id, question_id
+         * STEPS:
+         * - Insert single record into testing table with: user_id, subject_id,
+         * created_at (DateTime)
+         * - Insert multiple records into testing_question table with: testing_id,
+         * question_id
          */
         Testing testing = new Testing();
         testing.setUser((UserModel) auth.getPrincipal());
         testing.setSubject(subject);
         testing.setCreatedAt(new Date());
         for (Question question : questions) {
-            testing.addQuestion(question);
+            TestingQuestion testingQuestion = new TestingQuestion();
+            testingQuestion.setTesting(testing);
+            testingQuestion.setQuestion(question);
+            testing.addTestingQuestion(testingQuestion);
         }
-        this.testingService.create(testing);
 
-        return  "redirect:/testing/"+testing.getId();
+        this.testingService.save(testing);
+
+        return "redirect:/testing/" + testing.getId();
     }
 
     @GetMapping("/testing/{id}")
@@ -76,21 +82,20 @@ public class TestController {
             return "error";
         }
 
-
         model.addAttribute("subject", testing.getSubject());
-        model.addAttribute("questions", testing.getQuestions());
+        // model.addAttribute("questions", testing.getQuestions());
 
-        return  "testing/test";
+        return "testing/test";
     }
 
     @PostMapping("/testing")
-    public String check(Model model, @RequestParam HashMap<String, String>results){
+    public String check(Model model, @RequestParam HashMap<String, String> results) {
         Integer totalCorrect = 0;
         Integer totalIncorrect = 0;
         HashMap<String, Answer> correctAnswers = new HashMap<>();
         HashMap<String, Answer> selectedAnswers = new HashMap<>();
         HashMap<String, Question> questions = new HashMap<>();
-        for (Map.Entry<String, String> map : results.entrySet()){
+        for (Map.Entry<String, String> map : results.entrySet()) {
             Integer questionId = Integer.parseInt(map.getKey());
             Question question = this.questionRepository.findById(questionId).orElse(null);
             if (question == null) {
@@ -108,7 +113,7 @@ public class TestController {
 
                 if (Objects.equals(answer.getId(), answerId)) {
                     selectedAnswers.put(questionId.toString(), answer);
-                    if(answer.isCorrect()) {
+                    if (answer.isCorrect()) {
                         totalCorrect++;
                         continue;
                     }
@@ -117,7 +122,7 @@ public class TestController {
                 }
             }
 
-            Answer answer= this.answerRepository.findById(answerId).orElse(null);
+            Answer answer = this.answerRepository.findById(answerId).orElse(null);
         }
 
         model.addAttribute("totalCorrect", totalCorrect);
