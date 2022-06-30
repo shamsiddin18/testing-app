@@ -2,6 +2,7 @@ package com.testapp.testing.model;
 
 import com.testapp.answer.model.Answer;
 import com.testapp.question.model.Question;
+import com.testapp.testing.constraint.AnswerConstraint;
 
 import javax.persistence.*;
 
@@ -21,6 +22,7 @@ public class TestingQuestion {
     private Question question;
 
     @ManyToOne
+    @AnswerConstraint
     @JoinColumn(name = "answer_id", unique = false)
     private Answer answer;
 
