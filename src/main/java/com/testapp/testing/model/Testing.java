@@ -26,6 +26,12 @@ public class Testing {
     @OneToMany(mappedBy = "testing", cascade = { CascadeType.ALL })
     private Set<TestingQuestion> testingQuestions;
 
+    @Column(name = "ended_at")
+    private Date endedAt;
+
+    @Column(name="total_score")
+    private Integer score;
+
     public Testing() {
         this.testingQuestions = new HashSet<>();
     }
@@ -72,5 +78,25 @@ public class Testing {
 
     public void setTestingQuestion(Set<TestingQuestion> testingQuestions) {
         this.testingQuestions = testingQuestions;
+    }
+
+    public void setTestingQuestions(Set<TestingQuestion> testingQuestions) {
+        this.testingQuestions = testingQuestions;
+    }
+
+    public Date getEndedAt() {
+        return endedAt;
+    }
+
+    public void setEndedAt(Date endedAt) {
+        this.endedAt = endedAt;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
     }
 }

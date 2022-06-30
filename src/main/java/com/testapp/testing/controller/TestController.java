@@ -64,6 +64,9 @@ public class TestController {
         testing.setSubject(subject);
         testing.setCreatedAt(new Date());
         for (Question question : questions) {
+            if (question.getAnswers().size() == 0) {
+                continue;
+            }
             TestingQuestion testingQuestion = new TestingQuestion();
             testingQuestion.setTesting(testing);
             testingQuestion.setQuestion(question);
@@ -82,54 +85,100 @@ public class TestController {
             return "error";
         }
 
-        model.addAttribute("subject", testing.getSubject());
-        // model.addAttribute("questions", testing.getQuestions());
+        model.addAttribute("testing", testing);
 
         return "testing/test";
     }
 
-    @PostMapping("/testing")
-    public String check(Model model, @RequestParam HashMap<String, String> results) {
-        Integer totalCorrect = 0;
-        Integer totalIncorrect = 0;
-        HashMap<String, Answer> correctAnswers = new HashMap<>();
-        HashMap<String, Answer> selectedAnswers = new HashMap<>();
-        HashMap<String, Question> questions = new HashMap<>();
-        for (Map.Entry<String, String> map : results.entrySet()) {
-            Integer questionId = Integer.parseInt(map.getKey());
-            Question question = this.questionRepository.findById(questionId).orElse(null);
-            if (question == null) {
-                totalIncorrect++;
-                continue;
-            }
-            questions.put(questionId.toString(), question);
-            Integer answerId = Integer.parseInt(map.getValue());
-            List<Answer> answers = this.answerRepository.findByQuestionId(questionId);
-
-            for (Answer answer : answers) {
-                if (answer.isCorrect()) {
-                    correctAnswers.put(questionId.toString(), answer);
-                }
-
-                if (Objects.equals(answer.getId(), answerId)) {
-                    selectedAnswers.put(questionId.toString(), answer);
-                    if (answer.isCorrect()) {
-                        totalCorrect++;
-                        continue;
-                    }
-
-                    totalIncorrect++;
-                }
-            }
-
-            Answer answer = this.answerRepository.findById(answerId).orElse(null);
+    @PostMapping("/testing/{id}")
+    public String check(Model model, @PathVariable Integer id, @RequestParam HashMap<String, String>results){
+        Testing testing = this.testingService.find(id);
+        if(testing == null){
+            return  "error";
         }
+
+        Integer totalCorrect = 0;
+        Integer totalIncorrect = testing.getTestingQuestions().size();
+        HashMap<Integer, Answer> correctAnswers = new HashMap<>();
+        HashMap<Integer, Answer> submittedAnswers = new HashMap<>();
+        HashMap<Integer, Question> submittedQuestions = new HashMap<>();
+        Set<Question> answered = new HashSet<>();
+        Set<Question> notAnswered = new HashSet<>();
+        Set<TestingQuestion> testingQuestions = testing.getTestingQuestions();
+        for (TestingQuestion testingQuestion : testingQuestions) {
+            for (Answer answer : testingQuestion.getQuestion().getAnswers()) {
+                if (answer.isCorrect()) {
+                    correctAnswers.put(testingQuestion.getQuestion().getId(), answer);
+                }
+            }
+
+            boolean found = false;
+            for (Map.Entry<String, String> map : results.entrySet()) {
+                String key = map.getKey();
+                String val = map.getValue();
+                Integer questionId = Integer.parseInt(key);
+                if (!questionId.equals(testingQuestion.getId())) {
+                    continue;
+                }
+
+                found = true;
+                answered.add(testingQuestion.getQuestion());
+
+                Integer answerId = Integer.parseInt(val);
+                for (Answer answer : testingQuestion.getQuestion().getAnswers()) {
+                    if (answer.getId().equals(answerId)) {
+                        submittedAnswers.put(answer.getId(), answer);
+                        if (answer.isCorrect()) {
+                            totalCorrect++;
+                            totalIncorrect--;
+                            continue;
+                        }
+                    }
+                }
+            }
+
+            if (!found) {
+                notAnswered.add(testingQuestion.getQuestion());
+            }
+        }
+
+        for (TestingQuestion testingQuestion : testing.getTestingQuestions()) {
+            for (Map.Entry<String, String> map : results.entrySet()) {
+                String key = map.getKey();
+                String value = map.getValue();
+
+                Integer questionId = Integer.parseInt(key);
+                if (!testingQuestion.getQuestion().getId().equals(questionId)) {
+                    continue;
+                }
+
+                Integer answerId = Integer.parseInt(value);
+                for (Answer answer : testingQuestion.getQuestion().getAnswers()) {
+                    if (answer.getId().equals(answerId)) {
+                        submittedAnswers.put(answerId, answer);
+                        submittedQuestions.put(questionId, testingQuestion.getQuestion());
+                        testingQuestion.setAnswer(answer);
+                        break;
+                    }
+                }
+            }
+        }
+        testing.setEndedAt(new Date());
+        testing.setScore(totalCorrect);
+        this.testingService.save(testing);
+
+
 
         model.addAttribute("totalCorrect", totalCorrect);
         model.addAttribute("totalIncorrect", totalIncorrect);
-        model.addAttribute("questions", questions);
+        model.addAttribute("answered", answered);
+        model.addAttribute("notAnswered", notAnswered);
         model.addAttribute("correctAnswers", correctAnswers);
-        model.addAttribute("selectedAnswers", selectedAnswers);
+        model.addAttribute("submittedAnswers", submittedAnswers);
+        model.addAttribute("submittedQuestions", submittedQuestions);
+        model.addAttribute("testing", testing);
+        model.addAttribute("subject", testing.getSubject());
+        model.addAttribute("questions", testing.getTestingQuestions());
 
         return "testing/result";
     }
