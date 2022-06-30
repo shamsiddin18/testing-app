@@ -1,14 +1,12 @@
 package com.testapp.testing.model;
 
-
-import com.testapp.question.model.Question;
 import com.testapp.subject.model.Subject;
 import com.testapp.user.model.UserModel;
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name="testing")
+@Table(name = "testing")
 public class Testing {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,15 +23,11 @@ public class Testing {
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
-    @OneToMany(cascade={CascadeType.ALL})
-    @OrderBy
-    @JoinTable(name="testing_question",
-            joinColumns={@JoinColumn(name="testing_id", referencedColumnName="id")},
-            inverseJoinColumns={@JoinColumn(name="question_id", referencedColumnName="id")})
-    private Set<Question> questions;
+    @OneToMany(mappedBy = "testing", cascade = { CascadeType.ALL })
+    private Set<TestingQuestion> testingQuestions;
 
     public Testing() {
-        this.questions = new HashSet<Question>();
+        this.testingQuestions = new HashSet<>();
     }
 
     public Integer getId() {
@@ -68,15 +62,15 @@ public class Testing {
         this.createdAt = createdAt;
     }
 
-    public Set<Question> getQuestions() {
-        return questions;
+    public void addTestingQuestion(TestingQuestion testingQuestion) {
+        this.testingQuestions.add(testingQuestion);
     }
 
-    public void setQuestions(Set<Question> questions) {
-        this.questions = questions;
+    public Set<TestingQuestion> getTestingQuestions() {
+        return testingQuestions;
     }
 
-    public void addQuestion(Question question) {
-        this.questions.add(question);
+    public void setTestingQuestion(Set<TestingQuestion> testingQuestions) {
+        this.testingQuestions = testingQuestions;
     }
 }
