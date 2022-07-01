@@ -87,33 +87,22 @@ public class TestController {
 
         model.addAttribute("testing", testing);
 
-
         return "testing/test";
     }
 
     @PostMapping("/testing/{id}")
-    public String check(Model model, @PathVariable Integer id, @RequestParam HashMap<String, String>results){
+    public String check(Model model, @PathVariable Integer id, @RequestParam HashMap<String, String> results) {
         Testing testing = this.testingService.find(id);
-        if(testing == null){
-            return  "error";
+        if (testing == null) {
+            return "error";
         }
 
         Integer totalCorrect = 0;
         Integer totalIncorrect = testing.getTestingQuestions().size();
-        HashMap<Integer, Answer> correctAnswers = new HashMap<>();
         HashMap<Integer, Answer> submittedAnswers = new HashMap<>();
         HashMap<Integer, Question> submittedQuestions = new HashMap<>();
-        Set<Question> answered = new HashSet<>();
-        Set<Question> notAnswered = new HashSet<>();
         Set<TestingQuestion> testingQuestions = testing.getTestingQuestions();
         for (TestingQuestion testingQuestion : testingQuestions) {
-            for (Answer answer : testingQuestion.getQuestion().getAnswers()) {
-                if (answer.isCorrect()) {
-                    correctAnswers.put(testingQuestion.getQuestion().getId(), answer);
-                }
-            }
-
-            boolean found = false;
             for (Map.Entry<String, String> map : results.entrySet()) {
                 String key = map.getKey();
                 String val = map.getValue();
@@ -122,13 +111,12 @@ public class TestController {
                     continue;
                 }
 
-                found = true;
-                answered.add(testingQuestion.getQuestion());
-
                 Integer answerId = Integer.parseInt(val);
                 for (Answer answer : testingQuestion.getQuestion().getAnswers()) {
                     if (answer.getId().equals(answerId)) {
                         submittedAnswers.put(answer.getId(), answer);
+                        submittedQuestions.put(questionId, testingQuestion.getQuestion());
+                        testingQuestion.setAnswer(answer);
                         if (answer.isCorrect()) {
                             totalCorrect++;
                             totalIncorrect--;
@@ -137,49 +125,15 @@ public class TestController {
                     }
                 }
             }
-
-            if (!found) {
-                notAnswered.add(testingQuestion.getQuestion());
-            }
         }
 
-        for (TestingQuestion testingQuestion : testing.getTestingQuestions()) {
-            for (Map.Entry<String, String> map : results.entrySet()) {
-                String key = map.getKey();
-                String value = map.getValue();
-
-                Integer questionId = Integer.parseInt(key);
-                if (!testingQuestion.getQuestion().getId().equals(questionId)) {
-                    continue;
-                }
-
-                Integer answerId = Integer.parseInt(value);
-                for (Answer answer : testingQuestion.getQuestion().getAnswers()) {
-                    if (answer.getId().equals(answerId)) {
-                        submittedAnswers.put(answerId, answer);
-                        submittedQuestions.put(questionId, testingQuestion.getQuestion());
-                        testingQuestion.setAnswer(answer);
-                        break;
-                    }
-                }
-            }
-        }
         testing.setEndedAt(new Date());
         testing.setScore(totalCorrect);
         this.testingService.save(testing);
 
-
-
-        model.addAttribute("totalCorrect", totalCorrect);
-        model.addAttribute("totalIncorrect", totalIncorrect);
-        model.addAttribute("answered", answered);
-        model.addAttribute("notAnswered", notAnswered);
-        model.addAttribute("correctAnswers", correctAnswers);
         model.addAttribute("submittedAnswers", submittedAnswers);
         model.addAttribute("submittedQuestions", submittedQuestions);
         model.addAttribute("testing", testing);
-        model.addAttribute("subject", testing.getSubject());
-        model.addAttribute("testingQuestions", testing.getTestingQuestions());
 
         return "testing/result";
     }

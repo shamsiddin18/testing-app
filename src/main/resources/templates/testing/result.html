@@ -13,11 +13,11 @@
                     <td th:text="|${iter.index + 1}. ${testingQuestion.question.text}|"></td>
                     <table>
                         <tr>
-                            <div th:each="answer:${testingQuestions.question.answers}">
+                            <div th:each="answer:${testingQuestion.question.answers}">
                                 <div class="form-check" th:if="${submittedAnswers.containsKey(answer.id)}">
                                     <input
                                             type="radio"
-                                            th:attr="name=${testingQuestions.question.id}, class=${answer.correct ? 'form-check-input is-valid' : 'form-check-input is-invalid'}"
+                                            th:attr="name=${testingQuestion.question.id}, class=${answer.correct ? 'form-check-input is-valid' : 'form-check-input is-invalid'}"
                                             th:value="${answer.id}"
                                             checked="checked"
                                             required
@@ -27,25 +27,17 @@
                                 <div class="form-check" th:if="${!submittedAnswers.containsKey(answer.id)}">
                                     <input
                                             type="radio"
-                                            th:attr="name=${testingQuestions.question.id}, class=${answer.correct ? 'form-check-input is-valid' : 'form-check-input'}"
+                                            th:attr="name=${testingQuestion.question.id}, class=${answer.correct ? 'form-check-input is-valid' : 'form-check-input'}"
                                             th:value="${answer.id}"
                                             required
                                     >
                                     <label th:text="${answer.text}" class="form-check-label"></label><br>
                                 </div>
                             </div>
-                            <div class="text-warning" th:if="${!submittedQuestions.containsKey(testingQuestions.question.id)}">Not answered</div>
+                            <div class="text-warning" th:if="${!submittedQuestions.containsKey(testingQuestion.question.id)}">Not answered</div>
                         </tr>
                     </table>
                     <br>
-                </tr>
-                <tr>
-                    <td>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </td>
-                    <td>
-                        <a href="/testing" class="btn btn-light" role="button" >Cancel</a>
-                    </td>
                 </tr>
             </table>
         </div>
