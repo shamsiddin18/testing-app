@@ -17,6 +17,7 @@ public class Testing {
     private UserModel user;
 
     @ManyToOne
+    @OrderBy
     @JoinColumn(name = "subject_id", nullable = false, unique = false)
     private Subject subject;
 
@@ -24,6 +25,7 @@ public class Testing {
     private Date createdAt;
 
     @OneToMany(mappedBy = "testing", cascade = { CascadeType.ALL })
+    @OrderBy
     private Set<TestingQuestion> testingQuestions;
 
     @Column(name = "ended_at")

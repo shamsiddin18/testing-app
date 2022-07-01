@@ -87,6 +87,7 @@ public class TestController {
 
         model.addAttribute("testing", testing);
 
+
         return "testing/test";
     }
 
@@ -178,7 +179,7 @@ public class TestController {
         model.addAttribute("submittedQuestions", submittedQuestions);
         model.addAttribute("testing", testing);
         model.addAttribute("subject", testing.getSubject());
-        model.addAttribute("questions", testing.getTestingQuestions());
+        model.addAttribute("testingQuestions", testing.getTestingQuestions());
 
         return "testing/result";
     }
