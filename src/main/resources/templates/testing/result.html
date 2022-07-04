@@ -4,41 +4,44 @@
     <title>Register Page</title>
 </head>
 <body>
-    <section layout:fragment="body">
-        <div class="container">
-            <div class="justify-content-center">
-                <table>
-                    <tr>
-                        <td th:text="|Total correct answers: ${totalCorrect}|"></td>
-                    </tr>
-                    <tr>
-                        <td th:text="|Total incorrect answers: ${totalIncorrect}|"></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h2>Answers:</h2><br/>
-                            <table>
-                                <tr th:each="map:${questions}">
-                                    <td>
-                                        <label th:text="|question: ${map.value.text}|"></label><br>
-                                        <span th:if="${selectedAnswers.get(map.key).correct}">
-                                            <label th:text="|  Answer: ${correctAnswers.get(map.key).text}|"></label>
-                                        </span>
-                                        <div class="col-12">
-                                            <span th:unless="${selectedAnswers.get(map.key).correct}" >
-                                                <label th:text="|  Selected answer: ${selectedAnswers.get(map.key).text}|"></label><br>
-                                                <label th:text="|  Correct answer: ${correctAnswers.get(map.key).text}|"></label>
-                                            </span> 
-                                        </div>
-                                        <br>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+<section layout:fragment="body">
+    <div class="container">
+        <div class="justify-content-center">
+            <h1 class="text-center">Results</h1>
+            <table>
+                <tr th:each="testingQuestion,iter:${testing.testingQuestions}">
+                    <td th:text="|${iter.index + 1}. ${testingQuestion.question.text}|"></td>
+                    <table>
+                        <tr>
+                            <div th:each="answer:${testingQuestion.question.answers}">
+                                <div class="form-check" th:if="${submittedAnswers.containsKey(answer.id)}">
+                                    <input
+                                            type="radio"
+                                            th:attr="name=${testingQuestion.question.id}, class=${answer.correct ? 'form-check-input is-valid' : 'form-check-input is-invalid'}"
+                                            th:value="${answer.id}"
+                                            checked="checked"
+                                            required
+                                    >
+                                    <label th:text="${answer.text}" class="form-check-label"></label><br>
+                                </div>
+                                <div class="form-check" th:if="${!submittedAnswers.containsKey(answer.id)}">
+                                    <input
+                                            type="radio"
+                                            th:attr="name=${testingQuestion.question.id}, class=${answer.correct ? 'form-check-input is-valid' : 'form-check-input'}"
+                                            th:value="${answer.id}"
+                                            required
+                                    >
+                                    <label th:text="${answer.text}" class="form-check-label"></label><br>
+                                </div>
+                            </div>
+                            <div class="text-warning" th:if="${!submittedQuestions.containsKey(testingQuestion.question.id)}">Not answered</div>
+                        </tr>
+                    </table>
+                    <br>
+                </tr>
+            </table>
         </div>
-    </section>
+    </div>
+</section>
 </body>
 </html>
