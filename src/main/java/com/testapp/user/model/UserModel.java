@@ -29,6 +29,9 @@ public class UserModel implements  UserDetails{
     @Email(message = "Email should be valid")
     String email;
 
+
+
+
     public Integer getId() {
         return id;
     }
