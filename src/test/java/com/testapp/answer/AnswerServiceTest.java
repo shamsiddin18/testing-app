@@ -16,7 +16,11 @@ class AnswerServiceTest {
         Mockito.when(answerRepository.save(answer)).thenReturn(answer);
         AnswerService answerService = new AnswerService(answerRepository);
         Answer result = answerService.create(answer);
+<<<<<<< HEAD
         assertEquals(result, answer);
+=======
+        assertEquals(result,answer);
+>>>>>>> 1120746 (testing answer/question/subject/testing)
         Mockito.verify(answerRepository).save(answer);
     }
 }

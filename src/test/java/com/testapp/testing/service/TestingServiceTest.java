@@ -1,5 +1,8 @@
 package com.testapp.testing.service;
 
+import com.testapp.question.model.Question;
+import com.testapp.question.repository.QuestionRepository;
+import com.testapp.question.service.QuestionService;
 import com.testapp.testing.model.Testing;
 import com.testapp.testing.repository.TestingRepository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,6 +41,7 @@ public class TestingServiceTest {
     Mockito.verify(repository).findById(2);
   }
 
+<<<<<<< HEAD
   @Test
   public void when_save_return_objects(){
     Testing testing = new Testing();
@@ -49,4 +53,12 @@ public class TestingServiceTest {
     assertEquals(result, testing);
     Mockito.verify(repository).save(testing);
   }
+=======
+//  @Test
+//  public void when_save_return_objects(){
+//   TestingRepository testingRepository = Mockito.mock(TestingRepository.class);
+//   Testing testing = new Testing();
+//
+//  }
+>>>>>>> 1120746 (testing answer/question/subject/testing)
 }
