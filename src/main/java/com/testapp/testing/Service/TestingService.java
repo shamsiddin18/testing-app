@@ -1,4 +1,4 @@
-package com.testapp.testing.Service;
+package com.testapp.testing.service;
 
 import com.testapp.testing.model.Testing;
 import com.testapp.testing.repository.TestingRepository;
