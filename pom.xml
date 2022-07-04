@@ -105,6 +105,12 @@
 			<version>4.5.1</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>net.bytebuddy</groupId>
+			<artifactId>byte-buddy</artifactId>
+			<version>1.12.10</version>
+		</dependency>
 	</dependencies>
 	<properties>
 		<spring.version>5.3.20</spring.version>

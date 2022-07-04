@@ -23,7 +23,7 @@ class QuestionServiceTest {
 
     @BeforeEach
     void setUp(){
-        autoCloseable = MockitoAnnotations.openMocks(this);
+       autoCloseable = MockitoAnnotations.openMocks(this);
         underTest = new QuestionService(questionRepository);
     }
     @AfterEach
@@ -33,12 +33,12 @@ class QuestionServiceTest {
 
     @Test
     void canSave() {
-        String text ="hello";
-        Subject subject;
-        Integer subject1;
+        String text ="go go";
+        Subject subject = new Subject();
+//      subject.setId(1);
         Question question = new Question();
         question.setText(text);
-//      question.setSubject(subject);
+        question.setSubject(subject);
         underTest.save(question);
 
 //      verify(questionRepository).save();
