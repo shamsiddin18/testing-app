@@ -12,8 +12,8 @@ public class TestingService {
         this.testRepository = testRepository;
     }
 
-    public void save(Testing model) {
-        testRepository.save(model);
+    public Testing save(Testing model) {
+        return testRepository.save(model);
     }
 
     public Testing find(Integer id) {

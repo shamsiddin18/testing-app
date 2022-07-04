@@ -2,7 +2,6 @@ package com.testapp.testing.service;
 
 import com.testapp.testing.model.Testing;
 import com.testapp.testing.repository.TestingRepository;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -37,5 +36,17 @@ public class TestingServiceTest {
     assertNotNull(result);
     assertEquals(2, result.getId());
     Mockito.verify(repository).findById(2);
+  }
+
+  @Test
+  public void when_save_return_objects(){
+    Testing testing = new Testing();
+
+    TestingRepository repository = Mockito.mock(TestingRepository.class);
+    Mockito.when(repository.save(testing)).thenReturn(testing);
+    TestingService service = new TestingService(repository);
+    Testing result = service.save(testing);
+    assertEquals(result, testing);
+    Mockito.verify(repository).save(testing);
   }
 }
