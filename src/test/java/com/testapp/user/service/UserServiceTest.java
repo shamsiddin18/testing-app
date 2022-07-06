@@ -2,58 +2,61 @@ package com.testapp.user.service;
 
 import com.testapp.user.model.UserModel;
 import com.testapp.user.repository.UserRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.Null;
-import org.springframework.context.ApplicationContextException;
-import org.springframework.lang.Nullable;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class UserServiceTest {
-   private PasswordEncoder passwordEncoder;
     @Test
-    public void testRegisterUser() {
+    public void when_service_saves_user_successfully() {
         UserRepository userRepository = Mockito.mock(UserRepository.class);
-        PasswordEncoder passwordEncoder =  Mockito.mock(PasswordEncoder.class);
+        PasswordEncoder passwordEncoder = Mockito.mock(PasswordEncoder.class);
         UserModel userModel = new UserModel();
-        Mockito.when(passwordEncoder.encode(userModel.getPassword())).thenReturn(userModel.getPassword());
+        userModel.setPassword("foo");
+
+        Mockito.when(passwordEncoder.encode("foo")).thenReturn("encoded-password");
         Mockito.when(userRepository.save(userModel)).thenReturn(userModel);
-        UserService userService = new UserService(userRepository,passwordEncoder);
+        UserService userService = new UserService(userRepository, passwordEncoder);
         UserModel result = userService.registerUser(userModel);
-        assertEquals(result,userModel);
+        assertEquals(result, userModel);
         Mockito.verify(userRepository).save(result);
+        Mockito.verify(passwordEncoder).encode("foo");
     }
 
     @Test
-    public void testLoadUserByUsername(){
+    public void when_user_is_not_found_it_should_throw_exception() {
         UserRepository userRepository = Mockito.mock(UserRepository.class);
-        PasswordEncoder passwordEncoder =  Mockito.mock(PasswordEncoder.class);
-        UserModel userModel = new UserModel();
-        Mockito.when(userRepository.findFirstByLogin(userModel.getUsername())).thenReturn(null);
-        UserService userService = new UserService(userRepository,passwordEncoder);
-        ApplicationContextException exception = Assertions.assertThrows(ApplicationContextException.class, () -> {
-          Optional user= (userRepository.findFirstByLogin(userModel.getUsername()));
-        });
-//        String expectedMessage = null;
-//        String actualMessage = exception.getMessage();
-//        assertTrue(actualMessage.contains(expectedMessage));
-        Assertions.assertEquals(null, exception.getMessage());
-        
-        UserModel result = (UserModel) userService.loadUserByUsername(userModel.getUsername());
-        assertEquals(result,userModel);
-        Mockito.verify(userRepository).save(result);
+        PasswordEncoder passwordEncoder = Mockito.mock(PasswordEncoder.class);
 
+        UserModel userModel = new UserModel();
+        userModel.setLogin("foo");
+
+        Mockito.when(userRepository.findFirstByLogin("foo")).thenReturn(Optional.empty());
+        UserService userService = new UserService(userRepository, passwordEncoder);
+        assertThrows(UsernameNotFoundException.class, () -> {
+            userService.loadUserByUsername("foo");
+        });
+        Mockito.verify(userRepository).findFirstByLogin("foo");
     }
 
+    @Test
+    public void when_user_is_found_it_should_return_user() {
+        UserRepository userRepository = Mockito.mock(UserRepository.class);
+        PasswordEncoder passwordEncoder = Mockito.mock(PasswordEncoder.class);
 
+        UserModel userModel = new UserModel();
+        userModel.setLogin("foo");
 
+        Mockito.when(userRepository.findFirstByLogin("foo")).thenReturn(Optional.of(userModel));
+        UserService userService = new UserService(userRepository, passwordEncoder);
+        UserDetails result = userService.loadUserByUsername("foo");
+
+        assertEquals(result, userModel);
+        Mockito.verify(userRepository).findFirstByLogin("foo");
+    }
 }
