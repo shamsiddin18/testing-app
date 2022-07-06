@@ -20,16 +20,20 @@ public class UserService  implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void registerUser(UserModel userModel){
+   
+
+    public UserModel registerUser(UserModel userModel){
         userModel.setPassword(this.passwordEncoder.encode(userModel.getPassword()));
-        userRepository.save(userModel);
+       return  userRepository.save(userModel);
+
     }
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
         UserModel user =this.userRepository.findFirstByLogin(username).orElse(null);
-        if(user == null){
+        if (user == null){
             throw new UsernameNotFoundException("User is not found");
         }
+
         return user;
     }
 }
