@@ -28,10 +28,8 @@ public class TestingServiceTest {
     TestingRepository repository = Mockito.mock(TestingRepository.class);
     Testing testing = new Testing();
     testing.setId(2);
-
     Mockito.when(repository.findById(2)).thenReturn(Optional.of(testing));
     TestingService service = new TestingService(repository);
-
     Testing result = service.find(2);
     assertNotNull(result);
     assertEquals(2, result.getId());
@@ -41,7 +39,6 @@ public class TestingServiceTest {
   @Test
   public void when_save_return_objects(){
     Testing testing = new Testing();
-
     TestingRepository repository = Mockito.mock(TestingRepository.class);
     Mockito.when(repository.save(testing)).thenReturn(testing);
     TestingService service = new TestingService(repository);
