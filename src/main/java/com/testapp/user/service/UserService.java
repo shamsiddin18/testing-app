@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService implements UserDetailsService {
+public final class UserService implements UserDetailsService {
     private UserRepository userRepository;
 
     private PasswordEncoder passwordEncoder;

@@ -5,7 +5,7 @@ import com.testapp.testing.repository.TestingRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TestingService {
+public final class TestingService {
     private TestingRepository testRepository;
 
     public TestingService(TestingRepository testRepository) {

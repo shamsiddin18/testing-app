@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @Controller
-public class TestController {
+public  final class TestController {
     private final SubjectRepository subjectRepository;
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
@@ -91,7 +93,8 @@ public class TestController {
     }
 
     @PostMapping("/testing/{id}")
-    public String check(Model model, @PathVariable Integer id, @RequestParam HashMap<String, String> results) {
+    public String check(Model model, @PathVariable Integer id,
+                        @RequestParam HashMap<String, String> results) {
         Testing testing = this.testingService.find(id);
         if (testing == null) {
             return "error";

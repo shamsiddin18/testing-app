@@ -2,12 +2,25 @@ package com.testapp.testing.model;
 
 import com.testapp.subject.model.Subject;
 import com.testapp.user.model.UserModel;
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Entity
 @Table(name = "testing")
-public class Testing {
+public final class Testing {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -31,7 +44,7 @@ public class Testing {
     @Column(name = "ended_at")
     private Date endedAt;
 
-    @Column(name="total_score")
+    @Column(name = "total_score")
     private Integer score;
 
     public Testing() {

@@ -3,14 +3,22 @@ package com.testapp.question.model;
 import com.testapp.answer.model.Answer;
 import com.testapp.subject.model.Subject;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
-@Table(name="question")
-public class Question {
+@Table(name = "question")
+public final class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -23,7 +31,7 @@ public class Question {
     @JoinColumn(name = "subject_id", nullable = false)
     private Subject subject;
 
-    @OneToMany(mappedBy="question")
+    @OneToMany(mappedBy = "question")
     @OrderBy
     private Set<Answer> answers;
 
