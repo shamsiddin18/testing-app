@@ -5,7 +5,7 @@ import com.testapp.user.repository.UserRepository;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class UniqueLoginValidator implements ConstraintValidator<UniqueLoginConstraint, String> {
+public final class UniqueLoginValidator implements ConstraintValidator<UniqueLoginConstraint, String> {
     private final UserRepository repository;
 
     public UniqueLoginValidator(UserRepository repository) {
@@ -13,7 +13,7 @@ public class UniqueLoginValidator implements ConstraintValidator<UniqueLoginCons
     }
 
     @Override
-    public void initialize(UniqueLoginConstraint constraint) {}
+    public void initialize(UniqueLoginConstraint constraint) { }
 
     @Override
     public boolean isValid(String field, ConstraintValidatorContext context) {

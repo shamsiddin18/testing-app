@@ -3,14 +3,20 @@ package com.testapp.testing.model;
 import com.testapp.answer.model.Answer;
 import com.testapp.question.model.Question;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.GenerationType;
 
 @Entity
 @Table(name = "testing_question")
-public class TestingQuestion {
+public final class TestingQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "testing_id", referencedColumnName = "id", nullable = false)

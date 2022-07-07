@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-public class QuestionController {
+public final class QuestionController {
     private final QuestionRepository questionRepository;
     private final SubjectRepository subjectRepository;
     private final QuestionService questionService;
@@ -87,8 +87,7 @@ public class QuestionController {
         return "redirect:/subject/" + question.getSubject().getId() + "/questions";
     }
 
-    private List<Subject> getAllSubjects()
-    {
+    private List<Subject> getAllSubjects() {
         return this.subjectRepository.findAll();
     }
 }

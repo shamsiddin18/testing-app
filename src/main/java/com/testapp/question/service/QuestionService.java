@@ -5,7 +5,7 @@ import com.testapp.question.repository.QuestionRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class QuestionService {
+public final class QuestionService {
     private QuestionRepository questionRepository;
 
     public QuestionService(QuestionRepository questionRepository) {
