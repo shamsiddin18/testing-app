@@ -36,12 +36,7 @@ public class UserController {
         if (result.hasErrors()) {
             return "user/register";
         }
-
         userService.registerUser(userModel);
-
-        return "user/login";
+        return  "redirect:/login";
     }
-
-
-
 }
