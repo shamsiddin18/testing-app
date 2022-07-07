@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class QuestionServiceTest {
 
   @Test
-  public void when_save_return_object(){
+  public void when_save_return_object() {
     QuestionRepository questionRepository = Mockito.mock(QuestionRepository.class);
     Question question = new Question();
     Mockito.when(questionRepository.save(question)).thenReturn(question);

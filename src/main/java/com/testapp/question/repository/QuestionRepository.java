@@ -8,5 +8,5 @@ import java.util.Set;
 
 public interface QuestionRepository extends JpaRepository<Question, Integer> {
     Set<Question> findBySubjectId(Integer subject_id);
-    Optional <Question> findByTextAndSubjectId(String text, Integer subject_id);
+    Optional<Question> findByTextAndSubjectId(String text, Integer subject_id);
 }

@@ -5,11 +5,11 @@ import com.testapp.subject.repository.SubjectRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SubjectService {
+public final class SubjectService {
     private SubjectRepository subjectRepository;
 
-    public SubjectService(SubjectRepository subjectRepository){
-        this.subjectRepository=subjectRepository;
+    public SubjectService(SubjectRepository subjectRepository) {
+        this.subjectRepository = subjectRepository;
     }
 
     public Subject creatSubject(Subject subject) {

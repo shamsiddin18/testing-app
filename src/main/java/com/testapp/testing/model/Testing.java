@@ -24,7 +24,7 @@ public class Testing {
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
-    @OneToMany(mappedBy = "testing", cascade = { CascadeType.ALL })
+    @OneToMany(mappedBy = "testing", cascade = {CascadeType.ALL})
     @OrderBy
     private Set<TestingQuestion> testingQuestions;
 
