@@ -11,13 +11,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class SubjectServiceTest {
 
     @Test
-    public void create_subject(){
+    public void create_subject() {
         SubjectRepository subjectRepository = Mockito.mock(SubjectRepository.class);
         Subject subject = new Subject();
         Mockito.when(subjectRepository.save(subject)).thenReturn(subject);
         SubjectService subjectService = new SubjectService(subjectRepository);
         Subject result = subjectService.creatSubject(subject);
-        assertEquals(result,subject);
+        assertEquals(result, subject);
         Mockito.verify(subjectRepository).save(result);
     }
 }

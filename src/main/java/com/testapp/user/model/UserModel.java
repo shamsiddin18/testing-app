@@ -3,31 +3,36 @@ package com.testapp.user.model;
 import com.testapp.user.constraint.UniqueLoginConstraint;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Collection;
-@Entity
-@Table(name="user")
-public class UserModel implements  UserDetails{
 
+@Entity
+@Table(name = "user")
+public final class UserModel implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
 
     @NotEmpty(message = "Username cannot be empty")
     @Size(min = 4, max = 64)
     @UniqueLoginConstraint
-    String login;
+    private String login;
 
     @NotEmpty(message = "Password cannot be empty")
     @Size(min = 4, max = 64)
-    String password;
+    private String password;
 
     @NotEmpty(message = "Email cannot be empty")
     @Email(message = "Email should be valid")
-    String email;
+    private String email;
 
     public Integer getId() {
         return id;

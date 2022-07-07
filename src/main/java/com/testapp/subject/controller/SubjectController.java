@@ -1,43 +1,34 @@
 package com.testapp.subject.controller;
 
-import com.testapp.answer.model.Answer;
-import com.testapp.answer.repository.AnswerRepository;
-import com.testapp.question.model.Question;
-import com.testapp.question.repository.QuestionRepository;
 import com.testapp.subject.SubjectService;
 import com.testapp.subject.model.Subject;
 import com.testapp.subject.repository.SubjectRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
 import javax.validation.Valid;
-import java.util.*;
 
 @Controller
-public class SubjectController {
+public final class SubjectController {
     private final SubjectRepository repository;
     private final SubjectService subjectService;
-    private final QuestionRepository questionRepository;
-    private final AnswerRepository answerRepository;
 
     public SubjectController(
-        SubjectRepository repository,
-        SubjectService subjectService,
-        QuestionRepository questionRepository,
-        AnswerRepository answerRepository
-    ) {
+            SubjectRepository repository,
+            SubjectService subjectService) {
         this.repository = repository;
         this.subjectService = subjectService;
-        this.questionRepository = questionRepository;
-        this.answerRepository = answerRepository;
     }
 
     @GetMapping("/subjects")
-    public String viewList(Model model){
+    public String viewList(Model model) {
         List<Subject> subjects = this.repository.findAll();
-        System.out.println("subjects: "+subjects);
+        System.out.println("subjects: " + subjects);
         model.addAttribute("subjects", subjects);
         return "subject/list";
     }
@@ -49,7 +40,7 @@ public class SubjectController {
     }
 
     @PostMapping("/subject/add")
-    public String submitCreateForm(@Valid Subject subject, BindingResult result){
+    public String submitCreateForm(@Valid Subject subject, BindingResult result) {
         if (result.hasErrors()) {
             return "subject/create";
         }
@@ -70,15 +61,14 @@ public class SubjectController {
         return "subject/edit";
     }
 
-    @PostMapping ("/subject/{id}/edit")
-    public String submitEditForm(@Valid Subject subject,BindingResult result,Model model) {
+    @PostMapping("/subject/{id}/edit")
+    public String submitEditForm(@Valid Subject subject, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("subject" , subject);
+            model.addAttribute("subject", subject);
             return "subject/edit";
         }
 
         this.subjectService.creatSubject(subject);
         return "redirect:/subjects";
     }
-
 }

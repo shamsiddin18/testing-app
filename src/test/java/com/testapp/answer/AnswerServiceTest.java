@@ -10,9 +10,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class AnswerServiceTest {
 
     @Test
-   public void save_test_answer(){
+   public void save_test_answer() {
         AnswerRepository answerRepository = Mockito.mock(AnswerRepository.class);
-        Answer answer= new Answer();
+        Answer answer = new Answer();
         Mockito.when(answerRepository.save(answer)).thenReturn(answer);
         AnswerService answerService = new AnswerService(answerRepository);
         Answer result = answerService.create(answer);

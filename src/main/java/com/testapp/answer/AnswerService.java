@@ -5,14 +5,14 @@ import com.testapp.answer.repository.AnswerRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AnswerService {
+public final class AnswerService {
     private AnswerRepository answerRepository;
 
-    public AnswerService(AnswerRepository answerRepository){
-        this.answerRepository=answerRepository;
+    public AnswerService(AnswerRepository answerRepository) {
+        this.answerRepository = answerRepository;
     }
 
-    public Answer create(Answer answer){
+    public Answer create(Answer answer) {
         return answerRepository.save(answer);
     }
 }

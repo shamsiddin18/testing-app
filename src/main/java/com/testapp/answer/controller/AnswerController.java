@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-public class AnswerController {
+public final class AnswerController {
     private final AnswerRepository repository;
     private final AnswerService answerService;
     private final QuestionRepository questionRepository;
@@ -52,15 +52,20 @@ public class AnswerController {
     }
 
     @PostMapping("/answer/create")
-    public String submitCreateForm(@Valid Answer answer, BindingResult result, Model model) {
+    public String submitCreateForm(
+            @Valid Answer answer,
+            BindingResult result,
+            Model model) {
         if (result.hasErrors()) {
             model.addAttribute("questions", this.getAllQuestion());
             return "answer/create";
         }
         answerService.create(answer);
 
-        // @TODO: Please redirect to question answer list
-        return "redirect:/question/" + answer.getQuestion().getId() + "/answers";
+        return String.format(
+            "redirect:/question/%d/answers",
+            answer.getQuestion().getId()
+        );
     }
 
     @GetMapping("/answer/{id}/edit")

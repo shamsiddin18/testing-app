@@ -37,7 +37,7 @@ public class TestingServiceTest {
   }
 
   @Test
-  public void when_save_return_objects(){
+  public void when_save_return_objects() {
     Testing testing = new Testing();
     TestingRepository repository = Mockito.mock(TestingRepository.class);
     Mockito.when(repository.save(testing)).thenReturn(testing);

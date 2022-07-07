@@ -19,7 +19,7 @@ class UniqueTitleValidatorTest {
     }
 
     @Test
-    public void when_repository_return_null_it_should_be_valid(){
+    public void when_repository_return_null_it_should_be_valid() {
         SubjectRepository subjectRepository = Mockito.mock(SubjectRepository.class);
         ConstraintValidatorContext constraintValidatorContext = Mockito.mock(ConstraintValidatorContext.class);
         Subject subject = new Subject();
@@ -31,7 +31,7 @@ class UniqueTitleValidatorTest {
     }
 
     @Test
-    public void when_repository_return_not_null_it_should_be_invalid(){
+    public void when_repository_return_not_null_it_should_be_invalid() {
         SubjectRepository subjectRepository = Mockito.mock(SubjectRepository.class);
         ConstraintValidatorContext constraintValidatorContext = Mockito.mock(ConstraintValidatorContext.class);
         Subject subject = new Subject();
