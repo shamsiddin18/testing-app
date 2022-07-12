@@ -74,7 +74,6 @@ public final class AnswerController {
         if (answer == null) {
             return "redirect:user/error";
         }
-
         model.addAttribute("answer", answer);
         model.addAttribute("questions", this.getAllQuestion());
 

@@ -1,7 +1,9 @@
 package com.testapp.answer.controller;
 
 import java.util.List;
-
+import com.testapp.question.model.Question;
+import com.testapp.question.repository.QuestionRepository;
+import com.testapp.subject.model.Subject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ import com.testapp.answer.repository.AnswerRepository;
 @SpringBootTest(classes = Application.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class AnswerControllerIntegrationTest {
+  @Autowired
+  private QuestionRepository questionRepository;
+
   @Autowired
   private AnswerRepository answerRepository;
 
@@ -48,6 +53,28 @@ public class AnswerControllerIntegrationTest {
   }
 
   @Test
+  @WithMockUser(username = "test" , password = "test")
+  public void when_question_has_not_answers_it_should_return_empty_list() throws Exception {
+    Subject subject = new Subject();
+    subject.setId(1);
+
+    Question question = new Question();
+    question.setText("Dummy question");
+    question.setSubject(subject);
+    questionRepository.save(question);
+
+    mockMvc
+            .perform(MockMvcRequestBuilders.get("/question/{id}/answers", question.getId()))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(
+                    MockMvcResultMatchers
+                            .xpath("//td[contains(text(),'Empty')]")
+                            .exists());
+
+    questionRepository.delete(question);
+  }
+
+  @Test
   @WithMockUser(username = "test", password = "test")
   public void when_answer_is_created_it_should_be_in_the_list() throws Exception {
     mockMvc
@@ -62,5 +89,101 @@ public class AnswerControllerIntegrationTest {
                 .exists());
     List<Answer> answers = answerRepository.findByQuestionId(1);
     answerRepository.deleteAll(answers);
+  }
+
+  @Test
+  public void when_user_is_not_authenticated_create_page_should_redirect_to_login() throws Exception {
+    mockMvc
+            .perform(MockMvcRequestBuilders.get("/answer/create"))
+            .andExpect( MockMvcResultMatchers.redirectedUrl("http://localhost/login"));
+  }
+
+  @Test
+  @WithMockUser(username = "test", password = "test")
+  public void when_user_is_authenticated_create_page_should_be_displayed() throws Exception{
+    mockMvc
+            .perform(MockMvcRequestBuilders.get("/answer/create"))
+            .andExpect(MockMvcResultMatchers.status().isOk());
+  }
+
+  @Test
+  @WithMockUser(username = "test", password = "test")
+  public void when_user_is_authenticated_edit_page_should_be_displayed() throws Exception{
+    Question question = new Question();
+    question.setId(1);
+
+    Answer answer = new Answer();
+    answer.setText("Dummy answer");
+    answer.setQuestion(question);
+    answerRepository.save(answer);
+
+    mockMvc
+            .perform(MockMvcRequestBuilders.get("/answer/{id}/edit",answer.getId()))
+            .andExpect(MockMvcResultMatchers.status().isOk());
+
+    answerRepository.delete(answer);
+  }
+
+  @Test
+  public void when_user_is_not_authenticated_edit_page_should_redirect_to_login() throws  Exception{
+    Question question = new Question();
+    question.setId(1);
+
+    Answer answer = new Answer();
+    answer.setText("Dummy answer");
+    answer.setQuestion(question);
+    answerRepository.save(answer);
+
+    mockMvc
+            .perform(MockMvcRequestBuilders.get("/answer/{id}/edit",answer.getId()))
+            .andExpect(MockMvcResultMatchers.redirectedUrl("http://localhost/login"));
+
+    answerRepository.delete(answer);
+  }
+
+  @Test
+  @WithMockUser(username = "test", password = "test")
+  public void when_edit_form_invalid_it_should_display_validation_errors() throws Exception {
+    Question question = new Question();
+    question.setId(1);
+
+    Answer answer = new Answer();
+    answer.setText("Dummy answer");
+    answer.setQuestion(question);
+    answerRepository.save(answer);
+
+    mockMvc
+            .perform(MockMvcRequestBuilders.post("/answer/{id}/edit", answer.getId())
+                    .param("question", "1")
+                    .param("correct", "false"))
+            .andExpect(MockMvcResultMatchers
+                    .xpath("//span[contains(text(), 'must not be empty')]")
+                    .exists());
+    answerRepository.delete(answer);
+  }
+
+  @Test
+  @WithMockUser(username = "test", password = "test")
+  public void when_edit_form_submitted_it_should_be_in_the_list() throws Exception {
+    Question question = new Question();
+    question.setId(1);
+
+    Answer answer = new Answer();
+    answer.setText("Dummy answer");
+    answer.setQuestion(question);
+    answerRepository.save(answer);
+
+    mockMvc
+            .perform(MockMvcRequestBuilders.post("/answer/{id}/edit", answer.getId())
+                    .param("text", "Dummy answer edited")
+                    .param("question", "1")
+                    .param("correct", "false"))
+            .andExpect(MockMvcResultMatchers.redirectedUrl("/question/1/answers"))
+            .andDo(
+                    result -> MockMvcResultMatchers
+                            .xpath("//table//tbody//tr[0]//td[1][contains(text(), 'Dummy answer edited')]")
+                            .exists()
+            );
+    answerRepository.delete(answer);
   }
 }
