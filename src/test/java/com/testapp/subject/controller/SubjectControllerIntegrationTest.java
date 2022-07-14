@@ -45,7 +45,7 @@ public class SubjectControllerIntegrationTest {
     }
 
     @Test
-    public void when_user_is_not_authenticated_the_edit_page_should_be_redirected_to_login() throws Exception{
+    public void when_user_is_not_authenticated_the_add_page_should_be_redirected_to_login() throws Exception{
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/subject/add"))
                 .andExpect(MockMvcResultMatchers.redirectedUrl("http://localhost/login"));
@@ -138,6 +138,16 @@ public class SubjectControllerIntegrationTest {
                         .xpath("//div[contains(text(), ' cannot be empty')]")
                         .exists());
         subjectRepository.delete(subject);
+    }
+    @Test
+    @WithMockUser(username = "test", password = "test")
+    public void when_edit_form_invalid_it_should_display_validation_errors() throws Exception{
+        mockMvc
+                .perform(MockMvcRequestBuilders.post("/subject/{id}/edit", 1))
+                .andExpect(
+                        result ->  MockMvcResultMatchers
+                                .xpath("//div[contains(text(), ' cannot be empty')]")
+                                .exists());
     }
 
     @Test
