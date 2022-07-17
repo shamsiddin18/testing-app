@@ -23,8 +23,7 @@ public final class QuestionController {
     public QuestionController(
             QuestionRepository questionRepository,
             SubjectRepository subjectRepository,
-            QuestionService questionService
-    ) {
+            QuestionService questionService) {
         this.questionRepository = questionRepository;
         this.subjectRepository = subjectRepository;
         this.questionService = questionService;
@@ -40,7 +39,7 @@ public final class QuestionController {
 
         model.addAttribute("subject", subject);
 
-        return  "question/list";
+        return "question/list";
     }
 
     @GetMapping("/question/create")
@@ -79,7 +78,7 @@ public final class QuestionController {
     @PostMapping("/question/{id}/edit")
     public String submitEditForm(@Valid Question question, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("question", question);
+            // model.addAttribute("question", question);
             model.addAttribute("subjects", this.getAllSubjects());
             return "question/edit";
         }
