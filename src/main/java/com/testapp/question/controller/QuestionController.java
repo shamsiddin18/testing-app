@@ -34,7 +34,8 @@ public final class QuestionController {
     public String viewList(Model model, @PathVariable Integer id) {
         Subject subject = this.subjectRepository.findById(id).orElse(null);
         if (subject == null) {
-            return "404";
+            model.addAttribute("error", "Subject is not found");
+            return "error/404";
         }
 
         model.addAttribute("subject", subject);
@@ -65,7 +66,8 @@ public final class QuestionController {
     public String showEditForm(@PathVariable Integer id, Model model) {
         Question question = this.questionRepository.findById(id).orElse(null);
         if (question == null) {
-            return "404";
+            model.addAttribute("error", "Question is not found");
+            return "error/404";
         }
 
         model.addAttribute("question", question);
