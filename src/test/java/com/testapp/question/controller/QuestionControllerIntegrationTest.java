@@ -153,7 +153,7 @@ public class QuestionControllerIntegrationTest {
 
         @Test
         @WithMockUser(username = "test", password = "test")
-        public void when_edit_form_requered_fields_are_empty_it_should_display_validation_errors() throws Exception {
+        public void when_edit_form_required_fields_are_empty_it_should_display_validation_errors() throws Exception {
                 Subject subject = this.findSubjectById(1);
 
                 Question question = new Question();
