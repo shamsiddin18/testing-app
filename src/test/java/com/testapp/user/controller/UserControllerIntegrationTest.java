@@ -46,17 +46,10 @@ public class UserControllerIntegrationTest {
     @WithMockUser(username = "test", password = "test")
     public void when_user_is_authenticated_register_page_should_redirect_to_home_page() throws Exception{
         mockMvc
-               .perform(MockMvcRequestBuilders.get("/"))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+               .perform(MockMvcRequestBuilders.get("/register"))
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/"));
     }
-
-    @Test
-    @WithMockUser(username = "test", password = "test")
-    public void when_user_is_authenticated_register_page_should_display() throws Exception{
-        mockMvc
-                .perform(MockMvcRequestBuilders.get("/register"))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-    }
+    
 
    @Test
    @WithMockUser(username = "test", password = "test")
