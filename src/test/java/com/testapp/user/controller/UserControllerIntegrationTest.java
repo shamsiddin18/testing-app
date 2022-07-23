@@ -49,7 +49,7 @@ public class UserControllerIntegrationTest {
                .perform(MockMvcRequestBuilders.get("/register"))
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/"));
     }
-    
+
 
    @Test
    @WithMockUser(username = "test", password = "test")
