@@ -7,7 +7,7 @@
     <section layout:fragment="body">
         <div class="container">
             <div class="row justify-content-md-center">
-                <form action="#"  th:action="|/question/${question.id}/edit|" th:object="${question}" method="POST" novalidate>
+                <form action="#"  th:action="|/question/${question.id}/edit|" th:object="${question}" method="POST" novalidate="novalidate">
                 <h2 th:text="${question.text}"></h2>
                     <table>
                         <tr>
@@ -44,7 +44,7 @@
                                 <input type="submit" class="btn btn-primary" name="submit" value="Save"/>
                             </td>
                             <td colspan="2">
-                                <a th:href="|/subject/${question.subject.id}/questions|" class="btn btn-light" role="button" >Cancel</a>
+                                <a th:href="|/subject/${question.subject.id}/questions|" class="btn btn-light" role="button">Cancel</a>
                             </td>
                         </tr>
                     </table>

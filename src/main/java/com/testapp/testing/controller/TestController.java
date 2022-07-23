@@ -51,7 +51,8 @@ public  final class TestController {
     public String startTesting(@PathVariable Integer id, Authentication auth, Model model) {
         Subject subject = this.subjectRepository.findById(id).orElse(null);
         if (subject == null) {
-            return "404";
+            model.addAttribute("error", "Subject is not found");
+            return "error/404";
         }
         Set<Question> questions = this.questionRepository.findBySubjectId(subject.getId());
         /*
@@ -84,7 +85,8 @@ public  final class TestController {
     public String testing(@PathVariable Integer id, Model model) {
         Testing testing = testingService.find(id);
         if (testing == null) {
-            return "error";
+            model.addAttribute("error", "Testing is not found");
+            return "error/404";
         }
 
         model.addAttribute("testing", testing);
@@ -97,7 +99,8 @@ public  final class TestController {
                         @RequestParam HashMap<String, String> results) {
         Testing testing = this.testingService.find(id);
         if (testing == null) {
-            return "error";
+            model.addAttribute("error", "Testing is not found");
+            return "error/404";
         }
 
         Integer totalCorrect = 0;

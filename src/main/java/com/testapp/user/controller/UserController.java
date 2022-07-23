@@ -2,13 +2,12 @@ package com.testapp.user.controller;
 
 import com.testapp.user.model.UserModel;
 import com.testapp.user.service.UserService;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import java.security.Principal;
 import javax.validation.Valid;
 
 @Controller
@@ -20,14 +19,18 @@ public final class UserController {
     }
 
     @GetMapping("/register")
-    public String showRegisterForm(Model model) {
+    public String showRegisterForm(Model model, Principal principal) {
+        if (principal.getName() != null) {
+            return "redirect:/";
+        }
+
         model.addAttribute("userModel", new UserModel());
         return "user/register";
     }
 
     @GetMapping("/")
-    public String homePage(Authentication authentication, Model model) {
-        model.addAttribute("userLogin", authentication.getName());
+    public String homePage(Model model, Principal principal) {
+        model.addAttribute("userLogin", principal.getName());
         return "user/home";
     }
 

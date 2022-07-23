@@ -23,8 +23,7 @@ public final class QuestionController {
     public QuestionController(
             QuestionRepository questionRepository,
             SubjectRepository subjectRepository,
-            QuestionService questionService
-    ) {
+            QuestionService questionService) {
         this.questionRepository = questionRepository;
         this.subjectRepository = subjectRepository;
         this.questionService = questionService;
@@ -34,12 +33,13 @@ public final class QuestionController {
     public String viewList(Model model, @PathVariable Integer id) {
         Subject subject = this.subjectRepository.findById(id).orElse(null);
         if (subject == null) {
-            return "404";
+            model.addAttribute("error", "Subject is not found");
+            return "error/404";
         }
 
         model.addAttribute("subject", subject);
 
-        return  "question/list";
+        return "question/list";
     }
 
     @GetMapping("/question/create")
@@ -65,7 +65,8 @@ public final class QuestionController {
     public String showEditForm(@PathVariable Integer id, Model model) {
         Question question = this.questionRepository.findById(id).orElse(null);
         if (question == null) {
-            return "404";
+            model.addAttribute("error", "Question is not found");
+            return "error/404";
         }
 
         model.addAttribute("question", question);
@@ -77,7 +78,7 @@ public final class QuestionController {
     @PostMapping("/question/{id}/edit")
     public String submitEditForm(@Valid Question question, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("question", question);
+            // model.addAttribute("question", question);
             model.addAttribute("subjects", this.getAllSubjects());
             return "question/edit";
         }

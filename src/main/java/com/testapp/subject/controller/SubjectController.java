@@ -54,7 +54,8 @@ public final class SubjectController {
     public String showEditForm(@PathVariable Integer id, Model model) {
         Subject subject = this.repository.findById(id).orElse(null);
         if (subject == null) {
-            return "redirect:user/error";
+            model.addAttribute("error", "Subject is not found");
+            return "error/404";
         }
 
         model.addAttribute("subject", subject);

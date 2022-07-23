@@ -37,7 +37,8 @@ public final class AnswerController {
     public String viewList(@PathVariable Integer id, Model model) {
         Question question = this.questionRepository.findById(id).orElse(null);
         if (question == null) {
-            return "404";
+            model.addAttribute("error", "Question is not found");
+            return "error/404";
         }
 
         model.addAttribute("question", question);
@@ -63,9 +64,8 @@ public final class AnswerController {
         answerService.create(answer);
 
         return String.format(
-            "redirect:/question/%d/answers",
-            answer.getQuestion().getId()
-        );
+                "redirect:/question/%d/answers",
+                answer.getQuestion().getId());
     }
 
     @GetMapping("/answer/{id}/edit")
@@ -74,7 +74,6 @@ public final class AnswerController {
         if (answer == null) {
             return "redirect:user/error";
         }
-
         model.addAttribute("answer", answer);
         model.addAttribute("questions", this.getAllQuestion());
 
