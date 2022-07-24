@@ -49,12 +49,12 @@ public class QuestionControllerIntegrationTest {
         @WithMockUser(username = "test", password = "test")
         public void when_subject_does_not_exists_the_view_list_page_should_return_404() throws Exception {
                 mockMvc
-                                .perform(MockMvcRequestBuilders.get("/subject/{id}/questions", 999999))
-                                .andExpect(MockMvcResultMatchers.status().isOk())
-                                .andExpect(
-                                                MockMvcResultMatchers
-                                                                .xpath("//h1[contains(text(),'Subject is not found')]")
-                                                                .exists());
+                       .perform(MockMvcRequestBuilders.get("/subject/{id}/questions", 999999))
+                       .andExpect(MockMvcResultMatchers.status().isOk())
+                       .andExpect(
+                                 MockMvcResultMatchers
+                                 .xpath("//h1[contains(text(),'Subject is not found')]")
+                                 .exists());
         }
 
         @Test
@@ -182,12 +182,12 @@ public class QuestionControllerIntegrationTest {
                 questionRepository.save(question);
 
                 mockMvc
-                                .perform(MockMvcRequestBuilders.post("/question/{id}/edit", question.getId())
-                                                .param("text", "rr")
-                                                .param("subject", subject.getId().toString()))
+                   .perform(MockMvcRequestBuilders.post("/question/{id}/edit", question.getId())
+                               .param("text", "rr")
+                               .param("subject", subject.getId().toString()))
                                 .andExpect(
-                                                result -> MockMvcResultMatchers
-                                                                .xpath("//div[contains(text(), ' Question cannot be empty')]")
+                                        result -> MockMvcResultMatchers
+                                        .xpath("//div[contains(text(), ' Question cannot be empty')]")
                                                                 .exists());
                 questionRepository.delete(question);
         }
@@ -202,9 +202,9 @@ public class QuestionControllerIntegrationTest {
                 questionRepository.save(question);
 
                 mockMvc
-                                .perform(MockMvcRequestBuilders.post("/question/{id}/edit", question.getId())
-                                                .param("text", "dummy question updated")
-                                                .param("subject", subject.getId().toString()))
+                     .perform(MockMvcRequestBuilders.post("/question/{id}/edit", question.getId())
+                                      .param("text", "dummy question updated")
+                                      .param("subject", subject.getId().toString()))
                                 .andExpect(MockMvcResultMatchers.redirectedUrl(
                                                 "/subject/" + question.getSubject().getId() + "/questions"))
                                 .andDo(
