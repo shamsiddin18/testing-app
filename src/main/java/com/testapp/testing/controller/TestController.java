@@ -10,7 +10,10 @@ import com.testapp.testing.model.Testing;
 import com.testapp.testing.model.TestingQuestion;
 import com.testapp.testing.service.TestingService;
 import com.testapp.user.model.UserModel;
+import com.testapp.user.repository.UserRepository;
+
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,20 +26,23 @@ import java.util.Map;
 import java.util.Set;
 
 @Controller
-public  final class TestController {
+public final class TestController {
     private final SubjectRepository subjectRepository;
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
+    private final UserRepository userRepository;
     private final TestingService testingService;
 
     public TestController(
             SubjectRepository subjectRepository,
             AnswerRepository answerRepository,
             QuestionRepository questionRepository,
+            UserRepository userRepository,
             TestingService testingService) {
         this.answerRepository = answerRepository;
         this.questionRepository = questionRepository;
         this.subjectRepository = subjectRepository;
+        this.userRepository = userRepository;
         this.testingService = testingService;
     }
 
@@ -62,8 +68,15 @@ public  final class TestController {
          * - Insert multiple records into testing_question table with: testing_id,
          * question_id
          */
+
+        UserDetails user = (UserDetails) auth.getPrincipal();
+        UserModel userModel = this.userRepository.findFirstByLogin(user.getUsername()).orElse(null);
+        if (userModel == null) {
+            return "redirect:/login";
+        }
+
         Testing testing = new Testing();
-        testing.setUser((UserModel) auth.getPrincipal());
+        testing.setUser(userModel);
         testing.setSubject(subject);
         testing.setCreatedAt(new Date());
         for (Question question : questions) {
@@ -91,12 +104,28 @@ public  final class TestController {
 
         model.addAttribute("testing", testing);
 
+        if (testing.getEndedAt() != null) {
+            HashMap<Integer, Answer> submittedAnswers = new HashMap<>();
+            HashMap<Integer, Question> submittedQuestions = new HashMap<>();
+            for (TestingQuestion testingQuestion : testing.getTestingQuestions()) {
+                submittedQuestions.put(testingQuestion.getQuestion().getId(), testingQuestion.getQuestion());
+
+                for (Answer answer : testingQuestion.getQuestion().getAnswers()) {
+                    submittedAnswers.put(answer.getId(), answer);
+                }
+            }
+
+            model.addAttribute("submittedAnswers", submittedAnswers);
+            model.addAttribute("submittedQuestions", submittedQuestions);
+            return "testing/result";
+        }
+
         return "testing/test";
     }
 
     @PostMapping("/testing/{id}")
     public String check(Model model, @PathVariable Integer id,
-                        @RequestParam HashMap<String, String> results) {
+            @RequestParam HashMap<String, String> results) {
         Testing testing = this.testingService.find(id);
         if (testing == null) {
             model.addAttribute("error", "Testing is not found");
