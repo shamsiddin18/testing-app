@@ -27,6 +27,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -146,34 +148,54 @@ public class TestControllerIntegrationTest {
         this.testingRepository.delete(testing);
     }
 
-    // @Test
+    @Test
     @WithMockUser(username = "test", password = "test")
-    public void when_testing_submitted_it_should_display() throws Exception {
+    public void when_testing_submitted_with_valid_answer_the_score_should_not_be_0() throws Exception {
         Subject subject = this.findSubjectById(1);
-        UserModel user = this.findUserById(1);
 
-        Testing testing = new Testing();
-        testing.setSubject(subject);
-        testing.setUser(user);
-        testing.setCreatedAt(new Date());
-        testing.setEndedAt(new Date());
-        for (Question question : subject.getQuestions()) {
-            if (question.getAnswers().size() == 0) {
-                continue;
-            }
-            TestingQuestion testingQuestion = new TestingQuestion();
-            testingQuestion.setTesting(testing);
-            testingQuestion.setQuestion(question);
-            testing.addTestingQuestion(testingQuestion);
-        }
-        this.testingService.save(testing);
+        String redirectedUrl = mockMvc
+                .perform(MockMvcRequestBuilders.get("/testing/subject/{id}", subject.getId()))
+                .andExpect(MockMvcResultMatchers.redirectedUrlPattern("/testing/{id}"))
+                .andReturn()
+                .getResponse()
+                .getRedirectedUrl();
+
+        Integer testingId = Integer.parseInt(redirectedUrl.substring(redirectedUrl.lastIndexOf("/") + 1));
 
         mockMvc
                 .perform(MockMvcRequestBuilders
-                        .post("/testing/{id}", testing.getId())
-                        .param("results", "1=1"))
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/testing/result"));
+                        .post("/testing/{id}", testingId)
+                        .param("1", "2")) // answer the question with valid answer
+                .andExpect(MockMvcResultMatchers.status().isOk());
 
+        Testing testing = this.findTestById(testingId);
+        assertEquals(testing.getScore(), 1);
+        this.testingRepository.deleteById(testingId);
+    }
+
+    @Test
+    @WithMockUser(username = "test", password = "test")
+    public void when_testing_submitted_with_valid_answer_the_score_should_be_0() throws Exception {
+        Subject subject = this.findSubjectById(1);
+
+        String redirectedUrl = mockMvc
+                .perform(MockMvcRequestBuilders.get("/testing/subject/{id}", subject.getId()))
+                .andExpect(MockMvcResultMatchers.redirectedUrlPattern("/testing/{id}"))
+                .andReturn()
+                .getResponse()
+                .getRedirectedUrl();
+
+        Integer testingId = Integer.parseInt(redirectedUrl.substring(redirectedUrl.lastIndexOf("/") + 1));
+
+        mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post("/testing/{id}", testingId)
+                        .param("1", "1")) // answer the question with invalid answer
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        Testing testing = this.findTestById(testingId);
+        assertEquals(testing.getScore(), 0);
+        this.testingRepository.deleteById(testingId);
     }
 
     private Subject findSubjectById(Integer id) throws Exception {
@@ -192,5 +214,14 @@ public class TestControllerIntegrationTest {
         }
 
         return user;
+    }
+
+    private Testing findTestById(Integer id) throws Exception {
+        Testing testing = this.testingRepository.findById(id).orElse(null);
+        if (testing == null) {
+            throw new Exception("Testing is not found with given id: " + id);
+        }
+
+        return testing;
     }
 }

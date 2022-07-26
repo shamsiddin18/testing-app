@@ -142,7 +142,7 @@ public final class TestController {
                 String key = map.getKey();
                 String val = map.getValue();
                 Integer questionId = Integer.parseInt(key);
-                if (!questionId.equals(testingQuestion.getId())) {
+                if (!questionId.equals(testingQuestion.getQuestion().getId())) {
                     continue;
                 }
 
