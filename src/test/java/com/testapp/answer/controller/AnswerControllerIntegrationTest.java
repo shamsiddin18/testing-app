@@ -74,7 +74,7 @@ public class AnswerControllerIntegrationTest {
                 questionRepository.delete(question);
         }
 
-        // @Test
+         @Test
         @WithMockUser(username = "test", password = "test")
         public void when_answer_is_created_it_should_be_in_the_db() throws Exception {
                 mockMvc
@@ -84,10 +84,9 @@ public class AnswerControllerIntegrationTest {
                                                 .param("correct", "false"))
                                 .andExpect(MockMvcResultMatchers.redirectedUrl("/question/1/answers"));
 
-                List<Answer> answers = answerRepository.findByQuestionId(1);
 
-                // TODO: We should get rid of using deleteAll, we must use delete by ID
-                answerRepository.deleteAll(answers);
+                 Answer answer = answerRepository.findByText("Dummy answer");
+                  answerRepository.delete(answer);
         }
 
         @Test
@@ -181,4 +180,5 @@ public class AnswerControllerIntegrationTest {
 
                 answerRepository.delete(answer);
         }
+
 }
