@@ -1,13 +1,10 @@
 package com.testapp.testing.controller;
 
 import com.testapp.Application;
-import com.testapp.answer.model.Answer;
-import com.testapp.question.model.Question;
 import com.testapp.question.repository.QuestionRepository;
 import com.testapp.subject.model.Subject;
 import com.testapp.subject.repository.SubjectRepository;
 import com.testapp.testing.model.Testing;
-import com.testapp.testing.model.TestingQuestion;
 import com.testapp.testing.repository.TestingQuestionRepository;
 import com.testapp.testing.repository.TestingRepository;
 import com.testapp.testing.service.TestingService;
@@ -19,20 +16,17 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -60,6 +54,7 @@ public class TestControllerIntegrationTest {
     UserRepository userRepository;
 
     @Test
+    @WithAnonymousUser
     public void when_user_is_not_authenticated_subject_list_page_should_redirect_to_login() throws Exception {
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/testing"))
@@ -67,7 +62,7 @@ public class TestControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = "test", password = "test")
+    @WithMockUser
     public void when_user_is_authenticated_subject_list_page_should_display() throws Exception {
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/testing"))
@@ -75,6 +70,7 @@ public class TestControllerIntegrationTest {
     }
 
     @Test
+    @WithAnonymousUser
     public void when_user_is_not_authenticated_start_testing_page_should_redirect_to_login() throws Exception {
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/testing/subject/{id}", 1))
@@ -82,7 +78,7 @@ public class TestControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = "test", password = "test")
+    @WithMockUser
     public void when_subject_null_start_testing_page_should_return_404() throws Exception {
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/testing/subject/{id}", 99999))
@@ -94,7 +90,7 @@ public class TestControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = "test", password = "test")
+    @WithMockUser
     public void when_user_is_authenticated_start_testing_page_should_be_display() throws Exception {
         Subject subject = this.findSubjectById(1);
 
@@ -110,6 +106,7 @@ public class TestControllerIntegrationTest {
     }
 
     @Test
+    @WithAnonymousUser
     public void when_user_is_not_authenticated_testing_page_should_redirect_to_login() throws Exception {
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/testing/{id}", 9999))
@@ -117,7 +114,7 @@ public class TestControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = "test", password = "test")
+    @WithMockUser
     public void when_testing_does_not_exists_the_testing_page_should_return_404() throws Exception {
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/testing/{id}", 999999))
@@ -129,7 +126,7 @@ public class TestControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = "test", password = "test")
+    @WithMockUser
     public void when_user_is_authenticated_testing_page_should_display() throws Exception {
         Subject subject = this.findSubjectById(1);
         UserModel user = this.findUserById(1);
@@ -149,7 +146,7 @@ public class TestControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = "test", password = "test")
+    @WithMockUser
     public void when_testing_submitted_with_valid_answer_the_score_should_not_be_0() throws Exception {
         Subject subject = this.findSubjectById(1);
 
@@ -174,7 +171,7 @@ public class TestControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(username = "test", password = "test")
+    @WithMockUser
     public void when_testing_submitted_with_valid_answer_the_score_should_be_0() throws Exception {
         Subject subject = this.findSubjectById(1);
 

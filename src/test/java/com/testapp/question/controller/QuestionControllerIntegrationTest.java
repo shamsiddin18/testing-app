@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,6 +32,7 @@ public class QuestionControllerIntegrationTest {
         SubjectRepository subjectRepository;
 
         @Test
+        @WithAnonymousUser
         public void when_user_is_not_authenticated_list_page_should_redirect_to_login() throws Exception {
                 mockMvc
                                 .perform(MockMvcRequestBuilders.get("/subject/{id}/question", 1))
@@ -38,7 +40,7 @@ public class QuestionControllerIntegrationTest {
         }
 
         @Test
-        @WithMockUser(username = "test", password = "test")
+        @WithMockUser
         public void when_user_is_authenticated_the_list_page_should_be_displayed() throws Exception {
                 mockMvc
                                 .perform(MockMvcRequestBuilders.get("/subject/{id}/questions", 1))
@@ -46,7 +48,7 @@ public class QuestionControllerIntegrationTest {
         }
 
         @Test
-        @WithMockUser(username = "test", password = "test")
+        @WithMockUser
         public void when_subject_does_not_exists_the_view_list_page_should_return_404() throws Exception {
                 mockMvc
                        .perform(MockMvcRequestBuilders.get("/subject/{id}/questions", 999999))
@@ -58,6 +60,7 @@ public class QuestionControllerIntegrationTest {
         }
 
         @Test
+        @WithAnonymousUser
         public void when_user_is_not_authenticated_the_create_page_should_redirect_to_login() throws Exception {
                 mockMvc
                                 .perform(MockMvcRequestBuilders.get("/question/create"))
@@ -66,7 +69,7 @@ public class QuestionControllerIntegrationTest {
         }
 
         @Test
-        @WithMockUser(username = "test", password = "test")
+        @WithMockUser
         public void when_user_is_authenticated_the_create_page_should_display() throws Exception {
                 mockMvc
                                 .perform(MockMvcRequestBuilders.get("/question/create"))
@@ -74,7 +77,7 @@ public class QuestionControllerIntegrationTest {
         }
 
         @Test
-        @WithMockUser(username = "test", password = "test")
+        @WithMockUser
         public void when_question_is_created_it_should_be_in_the_list() throws Exception {
                 mockMvc
                                 .perform(MockMvcRequestBuilders.post("/question/create")
@@ -94,7 +97,7 @@ public class QuestionControllerIntegrationTest {
         }
 
         @Test
-        @WithMockUser(username = "test", password = "test")
+        @WithMockUser
         public void when_text_is_empty_create_form_should_display_validation_error() throws Exception {
                 mockMvc
                                 .perform(MockMvcRequestBuilders.post("/question/add"))
@@ -105,7 +108,7 @@ public class QuestionControllerIntegrationTest {
         }
 
         @Test
-        @WithMockUser(username = "test", password = "test")
+        @WithMockUser
         public void when_text_is_less_than_3_create_form_should_display_validation_error() throws Exception {
                 mockMvc
                                 .perform(MockMvcRequestBuilders.post("/question/add")
@@ -117,6 +120,7 @@ public class QuestionControllerIntegrationTest {
         }
 
         @Test
+        @WithAnonymousUser
         public void when_user_is_not_authenticated_the_edit_page_should_be_redirected_to_login() throws Exception {
                 mockMvc
                                 .perform(MockMvcRequestBuilders.get("/question/{id}/edit", 1))
@@ -124,7 +128,7 @@ public class QuestionControllerIntegrationTest {
         }
 
         @Test
-        @WithMockUser(username = "test", password = "test")
+        @WithMockUser
         public void when_user_authenticated_the_edit_page_should_be_displayed() throws Exception {
                 Subject subject = this.findSubjectById(1);
 
@@ -139,7 +143,7 @@ public class QuestionControllerIntegrationTest {
         }
 
         @Test
-        @WithMockUser(username = "test", password = "test")
+        @WithMockUser
         public void when_question_does_not_exists_the_edit_page_should_return_404() throws Exception {
                 mockMvc
                                 .perform(MockMvcRequestBuilders.get("/question/{id}/edit", 1))
@@ -152,7 +156,7 @@ public class QuestionControllerIntegrationTest {
         }
 
         @Test
-        @WithMockUser(username = "test", password = "test")
+        @WithMockUser
         public void when_edit_form_required_fields_are_empty_it_should_display_validation_errors() throws Exception {
                 Subject subject = this.findSubjectById(1);
 
@@ -172,7 +176,7 @@ public class QuestionControllerIntegrationTest {
         }
 
         @Test
-        @WithMockUser(username = "test", password = "test")
+        @WithMockUser
         public void when_title_length_less_than_three_edit_form_should_display_validation_errors() throws Exception {
                 Subject subject = this.findSubjectById(1);
 
@@ -193,7 +197,7 @@ public class QuestionControllerIntegrationTest {
         }
 
         @Test
-        @WithMockUser(username = "test", password = "test")
+        @WithMockUser
         public void when_edit_form_submitted_it_should_be_in_the_list() throws Exception {
                 Subject subject = this.findSubjectById(1);
                 Question question = new Question();
