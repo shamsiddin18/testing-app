@@ -43,7 +43,7 @@ public class AnswerControllerIntegrationTest {
         }
 
         @Test
-        @WithMockUser
+        @WithMockUser(username = "test",password = "test")
         public void when_question_is_invalid_it_should_return_not_found() throws Exception {
                 mockMvc
                                 .perform(MockMvcRequestBuilders.get("/question/{id}/answers", 999999))
@@ -55,7 +55,7 @@ public class AnswerControllerIntegrationTest {
         }
 
         @Test
-        @WithMockUser
+        @WithMockUser(username = "test",password = "test")
         public void when_question_has_not_answers_it_should_return_empty_list() throws Exception {
                 Subject subject = new Subject();
                 subject.setId(1);
@@ -77,7 +77,7 @@ public class AnswerControllerIntegrationTest {
         }
 
          @Test
-        @WithMockUser
+        @WithMockUser(username = "test",password = "test")
         public void when_answer_is_created_it_should_be_in_the_db() throws Exception {
                 mockMvc
                                 .perform(MockMvcRequestBuilders.post("/answer/create")
@@ -100,7 +100,7 @@ public class AnswerControllerIntegrationTest {
         }
 
         @Test
-        @WithMockUser
+        @WithMockUser(username = "test",password = "test")
         public void when_user_is_authenticated_create_page_should_be_displayed() throws Exception {
                 mockMvc
                                 .perform(MockMvcRequestBuilders.get("/answer/create"))
@@ -108,7 +108,7 @@ public class AnswerControllerIntegrationTest {
         }
 
         @Test
-        @WithMockUser
+        @WithMockUser(username = "test",password = "test")
         public void when_user_is_authenticated_edit_page_should_be_displayed() throws Exception {
                 Question question = new Question();
                 question.setId(1);
@@ -144,7 +144,7 @@ public class AnswerControllerIntegrationTest {
         }
 
         @Test
-        @WithMockUser
+        @WithMockUser(username = "test",password = "test")
         public void when_edit_form_invalid_it_should_display_validation_errors() throws Exception {
                 Question question = new Question();
                 question.setId(1);
@@ -165,7 +165,7 @@ public class AnswerControllerIntegrationTest {
         }
 
         @Test
-        @WithMockUser
+        @WithMockUser(username = "test",password = "test")
         public void when_edit_form_submitted_it_should_be_in_the_list() throws Exception {
                 Question question = new Question();
                 question.setId(1);

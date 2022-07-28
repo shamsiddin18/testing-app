@@ -36,7 +36,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "test",password = "test")
     public void when_user_is_authenticated_home_page_should_be_displayed() throws Exception{
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/"))
@@ -44,7 +44,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "test",password = "test")
     public void when_user_is_authenticated_register_page_should_redirect_to_home_page() throws Exception{
         mockMvc
                .perform(MockMvcRequestBuilders.get("/register"))
@@ -53,7 +53,7 @@ public class UserControllerIntegrationTest {
 
 
    @Test
-   @WithMockUser
+   @WithMockUser(username = "test",password = "test")
    public void when_register_form_required_are_empty_it_should_display_validation_error() throws Exception{
        mockMvc
                .perform(MockMvcRequestBuilders.post("/register"))
@@ -64,7 +64,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "test",password = "test")
     public void when_username_box_is_empty_it_should_display_validation_error() throws Exception{
         mockMvc
                 .perform(MockMvcRequestBuilders.post("/register")
@@ -77,7 +77,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "test",password = "test")
     public void when_username_less_then_4_it_should_display_validation_error() throws Exception{
         mockMvc
                 .perform(MockMvcRequestBuilders.post("/register")
@@ -91,7 +91,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "test",password = "test")
     public void when_username_more_then_64_it_should_display_validation_error() throws Exception{
         mockMvc
                 .perform(MockMvcRequestBuilders.post("/register")
@@ -110,7 +110,7 @@ public class UserControllerIntegrationTest {
                                 .exists());
     }
     @Test
-    @WithMockUser
+    @WithMockUser(username = "test",password = "test")
     public void when_email_box_is_empty_it_should_display_validation_error() throws Exception{
         mockMvc
                 .perform(MockMvcRequestBuilders.post("/register")
@@ -122,7 +122,7 @@ public class UserControllerIntegrationTest {
                                 .exists());
     }
     @Test
-    @WithMockUser
+    @WithMockUser(username = "test",password = "test")
     public void when_email_without_icon_it_should_display_validation_error() throws Exception{
         mockMvc
                 .perform(MockMvcRequestBuilders.post("/register")
@@ -135,7 +135,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "test",password = "test")
     public void when_password_box_is_empty_it_should_display_validation_error() throws Exception{
         mockMvc
                 .perform(MockMvcRequestBuilders.post("/register")
@@ -147,7 +147,7 @@ public class UserControllerIntegrationTest {
                                 .exists());
     }
     @Test
-    @WithMockUser
+    @WithMockUser(username = "test",password = "test")
     public void when_password_less_then_4_it_should_display_validation_error() throws Exception{
         mockMvc
                 .perform(MockMvcRequestBuilders.post("/register")
@@ -161,7 +161,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "test",password = "test")
     public void when_password_more_then_64_it_should_display_validation_error() throws Exception{
         mockMvc
                 .perform(MockMvcRequestBuilders.post("/register")
@@ -181,7 +181,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "test",password = "test")
     public void when_register_submitted_it_should_redirect_to_login() throws Exception{
         mockMvc
                 .perform(MockMvcRequestBuilders.post("/register")
@@ -195,11 +195,4 @@ public class UserControllerIntegrationTest {
         }
 
     }
-
-
-
-
-
-
-
 }

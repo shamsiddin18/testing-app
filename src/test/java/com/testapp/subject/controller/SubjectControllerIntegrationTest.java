@@ -39,7 +39,7 @@ public class SubjectControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "test",password = "test")
     public void when_user_is_authenticated_the_list_page_should_be_displayed() throws Exception {
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/subjects"))
@@ -55,7 +55,7 @@ public class SubjectControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "test",password = "test")
     public void when_user_is_authenticated_the_adding_page_should_be_displayed() throws Exception{
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/subject/add"))
@@ -63,7 +63,7 @@ public class SubjectControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "test",password = "test")
     public void when_subject_is_created_it_should_be_in_the_list() throws Exception{
         mockMvc
                 .perform(MockMvcRequestBuilders.post("/subject/add")
@@ -78,7 +78,7 @@ public class SubjectControllerIntegrationTest {
 
     }
     @Test
-    @WithMockUser
+    @WithMockUser(username = "test",password = "test")
     public void when_title_is_empty_create_form_should_display_validation_error() throws Exception{
         mockMvc
                 .perform(MockMvcRequestBuilders.post("/subject/add")
@@ -90,7 +90,7 @@ public class SubjectControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "test",password = "test")
     public void when_title_already_exists_create_form_should_display_validation_error() throws Exception{
           Subject subject = new Subject();
           subject.setTitle("Dummy");
@@ -117,7 +117,7 @@ public class SubjectControllerIntegrationTest {
 
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "test",password = "test")
     public void when_user_authenticated_edit_page_it_should_be_display() throws Exception{
         Subject subject = new Subject();
         subject.setTitle("math106");
@@ -130,7 +130,7 @@ public class SubjectControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "test",password = "test")
     public void when_edit_form_empty_it_should_display_validation_errors() throws Exception{
         Subject subject = new Subject();
         subject.setTitle("math118");
@@ -144,7 +144,7 @@ public class SubjectControllerIntegrationTest {
         subjectRepository.delete(subject);
     }
     @Test
-    @WithMockUser
+    @WithMockUser(username = "test",password = "test")
     public void when_edit_form_invalid_it_should_display_validation_errors() throws Exception{
         mockMvc
                 .perform(MockMvcRequestBuilders.post("/subject/{id}/edit", 1))
@@ -155,7 +155,7 @@ public class SubjectControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "test",password = "test")
     public void when_subject_does_not_exists_the_edit_page_should_return_404()throws Exception{
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/subject/{id}/edit", 999999))
@@ -167,7 +167,7 @@ public class SubjectControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "test",password = "test")
     public void when_edit_form_submitted_it_should_show_in_list() throws Exception{
         Subject subject = new Subject();
         subject.setTitle("math133");
