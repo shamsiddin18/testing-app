@@ -8,6 +8,7 @@ import com.testapp.subject.model.Subject;
 import com.testapp.subject.repository.SubjectRepository;
 import com.testapp.testing.model.Testing;
 import com.testapp.testing.model.TestingQuestion;
+import com.testapp.testing.repository.TestingRepository;
 import com.testapp.testing.service.TestingService;
 import com.testapp.user.model.UserModel;
 import com.testapp.user.repository.UserRepository;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,18 +34,21 @@ public final class TestController {
     private final QuestionRepository questionRepository;
     private final UserRepository userRepository;
     private final TestingService testingService;
+    private final TestingRepository testingRepository;
 
     public TestController(
             SubjectRepository subjectRepository,
             AnswerRepository answerRepository,
             QuestionRepository questionRepository,
             UserRepository userRepository,
-            TestingService testingService) {
+            TestingService testingService,
+            TestingRepository testingRepository) {
         this.answerRepository = answerRepository;
         this.questionRepository = questionRepository;
         this.subjectRepository = subjectRepository;
         this.userRepository = userRepository;
         this.testingService = testingService;
+        this.testingRepository = testingRepository;
     }
 
     @GetMapping("/testing")
@@ -171,6 +176,20 @@ public final class TestController {
         model.addAttribute("testing", testing);
 
         return "testing/result";
+    }
+
+    @GetMapping("testing/info")
+    public String resultUser(Model model, Authentication auth) {
+
+        UserDetails user = (UserDetails) auth.getPrincipal();
+        UserModel userModel = this.userRepository.findFirstByLogin(user.getUsername()).orElse(null);
+        if (userModel == null) {
+            return "redirect:/";
+        }
+        List<Testing> testings = testingRepository.findAllByUserId(userModel.getId());
+        model.addAttribute("testings", testings);
+
+        return "testing/info";
     }
 
 }

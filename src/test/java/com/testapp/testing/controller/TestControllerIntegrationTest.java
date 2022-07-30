@@ -202,6 +202,23 @@ public class TestControllerIntegrationTest {
         this.testingRepository.deleteById(testingId);
     }
 
+    @Test
+    @WithAnonymousUser
+    public void when_user_is_not_authenticated_testing_results_info_page_should_redirect_to_login_in()throws Exception{
+        mockMvc
+                .perform(MockMvcRequestBuilders.get("/testing/info"))
+                .andExpect(MockMvcResultMatchers.redirectedUrl("http://localhost/login"));
+    }
+
+    @Test
+    @WithMockUser(username = "test", password = "test")
+    public void when_user_is_authenticated_testing_results_info_page_should_display() throws Exception{
+        mockMvc
+                .perform(MockMvcRequestBuilders.get("/testing/info"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+    
+
     private Subject findSubjectById(Integer id) throws Exception {
         Subject subject = this.subjectRepository.findById(id).orElse(null);
         if (subject == null) {

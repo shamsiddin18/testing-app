@@ -13,6 +13,7 @@
       </a>
       <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
         <li sec:authorize="isAuthenticated()"><a href="/" class="nav-link px-2 link-secondary">Home</a></li>
+        <li sec:authorize="isAuthenticated()"><a href="/testing/info" class="nav-link px-2 link-dark">Info</a></li>
         <li sec:authorize="isAuthenticated()"><a href="/subjects" class="nav-link px-2 link-dark">Subjects</a></li>
         <li sec:authorize="isAuthenticated()"><a href="/testing" class="nav-link px-2 link-dark">Test</a></li>
         <li sec:authorize="isAuthenticated()">
