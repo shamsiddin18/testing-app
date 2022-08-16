@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet" />
     <link th:href="@{/assets/css/bootstrap-icons.css}" rel="stylesheet" />
     <title th:fragment="title">TestingApp</title>
@@ -12,10 +12,13 @@
           <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
       </a>
       <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="/" class="nav-link px-2 link-secondary">Home</a></li>
-          <li><a href="/subjects" class="nav-link px-2 link-dark">Subjects</a></li>
-          <li><a href="/testing" class="nav-link px-2 link-dark">Test</a></li>
-          <li><a href="/logout" class="nav-link px-2 link-dark">Logout</a></li>
+        <li sec:authorize="isAuthenticated()"><a href="/" class="nav-link px-2 link-secondary">Home</a></li>
+        <li sec:authorize="isAuthenticated()"><a href="/testing/info" class="nav-link px-2 link-dark">Info</a></li>
+        <li sec:authorize="isAuthenticated()"><a href="/subjects" class="nav-link px-2 link-dark">Subjects</a></li>
+        <li sec:authorize="isAuthenticated()"><a href="/testing" class="nav-link px-2 link-dark">Test</a></li>
+        <li sec:authorize="isAuthenticated()">
+            <a href="/logout" class="nav-link px-2 link-dark">Welcome <span sec:authentication="name"></span>, Logout</a>
+        </li>
       </ul>
   </header>
   <div class="container" layout:fragment="body"></div>
@@ -24,7 +27,7 @@
         <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
             <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
         </a>
-        <p class="text-muted">TestingApp &copy; 2022</p>
+        <p class="text-muted">TestingApp © 2022</p>
     </div>
   </footer>
   <script th:src="@{/assets/js/bootstrap.min.js}"></script>

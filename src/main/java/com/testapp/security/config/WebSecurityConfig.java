@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-public final class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
@@ -37,7 +37,11 @@ public final class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
                  .anyRequest()
                  .authenticated()
                  .and()
-            .formLogin();
+            .formLogin()
+                .permitAll()
+                .and()
+            .logout()
+                .permitAll();
     }
 
     @Override

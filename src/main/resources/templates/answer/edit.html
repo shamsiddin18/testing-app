@@ -5,7 +5,7 @@
 </head>
 <body>
     <section layout:fragment="body">
-        <form  action="#"  th:action="|/answer/${answer.id}/edit|" th:object="${answer}" method="POST" novalidate>
+        <form  action="#"  th:action="|/answer/${answer.id}/edit|" th:object="${answer}" method="POST" novalidate="novalidate">
             <div class="container">
                 <div class="justify-content-center">
                     <h3>Edit Answer</h3>
@@ -14,7 +14,7 @@
                         <tr>
                             <td>Text</td>
                             <td>
-                                <input type="text" th:field="*{text}" placeholder="answer">
+                                <input type="text" th:field="*{text}" placeholder="answer"/>
                                 <span th:if="${#fields.hasErrors('text')}" th:errors="*{text}">Text Error</span>
                             </td>
                         </tr>
@@ -28,7 +28,7 @@
                                     <th:block th:each="question:${questions}">
                                         <option th:value="${question.id}" th:text="${question.text}"></option>
                                     </th:block>
-                                </select> <br>
+                                </select> <br/>
                                 <span th:if="${#fields.hasErrors('question')}" th:errors="*{question}">Subject Error</span>
                             </td>
                         </tr>
@@ -38,7 +38,7 @@
                                 <select th:field="*{correct}">
                                     <option value="true">yes</option>
                                     <option value="false">no</option>
-                                </select> <br>
+                                </select> <br/>
                                 <span th:if="${#fields.hasErrors('correct')}" th:errors="*{correct}">Text Error</span>
                             </td>
                         </tr>

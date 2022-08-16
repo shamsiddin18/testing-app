@@ -8,7 +8,7 @@
 		<div class="container">
             <div class="row justify-content-md-center">
                 <h2>Welcome to register page</h2>
-                <form class="col-6 needs-validation" action="#"  th:action="@{/register}" th:object="${userModel}" method="POST" novalidate>
+                <form class="col-6 needs-validation" action="#"  th:action="@{/register}" th:object="${userModel}" method="POST" novalidate="novalidate">
                     <div class="col-12">
                         <label for="login" class="form-label">Username</label>
                         <div class="input-group has-validation">
@@ -17,7 +17,6 @@
                             </div>
                         </div>
                     </div>
-    
                     <div class="col-12">
                         <label for="email" class="form-label">Email</label>
                         <div class="input-group has-validation">
@@ -34,7 +33,11 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Register</button>
+                    <div class="col-12">
+                        <br/>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                        <a class="btn btn-secondary" href="/login" role="button">Log In</a>
+                    </div>
                 </form>
             </div>
         </div>

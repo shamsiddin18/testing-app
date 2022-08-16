@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  app-jdk:
+    container_name: app-jdk
+    build:
+      context: docker/jdk
+      dockerfile: Dockerfile
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - 8080:8080
+    links:
+      - app-mysql
+  app-mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: app_db
+    ports:
+      - 3306

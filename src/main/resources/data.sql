@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.37)
 # Database: testing
-# Generation Time: 2022-07-01 06:14:13 +0000
+# Generation Time: 2022-07-26 03:06:36 +0000
 # ************************************************************
 
 
@@ -41,13 +41,7 @@ LOCK TABLES `answer` WRITE;
 INSERT INTO `answer` (`id`, `is_correct`, `text`, `question_id`)
 VALUES
 	(1,b'0','Answer 1',1),
-	(2,b'1','Answer 2',1),
-	(3,b'0','Answer 3',1),
-	(4,b'1','Answer 4',2),
-	(5,b'0','Answer 5',2),
-	(6,b'0','Answer 6',3),
-	(7,b'0','Answer 7',3),
-	(8,b'1','Answer 8',3);
+	(2,b'1','Answer 2',1);
 
 /*!40000 ALTER TABLE `answer` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -72,11 +66,7 @@ LOCK TABLES `question` WRITE;
 
 INSERT INTO `question` (`id`, `text`, `subject_id`)
 VALUES
-	(1,'Question 1',1),
-	(2,'Question 2',1),
-	(3,'Question 3',1),
-	(4,'Question 4',2),
-	(5,'Question 5',2);
+	(1,'Question 1',1);
 
 /*!40000 ALTER TABLE `question` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -98,8 +88,7 @@ LOCK TABLES `subject` WRITE;
 
 INSERT INTO `subject` (`id`, `title`)
 VALUES
-	(1,'Subject 1'),
-	(2,'Subject 2');
+	(1,'Subject 1');
 
 /*!40000 ALTER TABLE `subject` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -165,7 +154,7 @@ LOCK TABLES `user` WRITE;
 
 INSERT INTO `user` (`id`, `email`, `login`, `password`)
 VALUES
-	(1,'test@test.com','test','$2a$10$RCWf2A/z4qfij3q6EUigI.jDYnqlKaX5.b8/LVnXRbfS8RgQ4v3oi');
+	(1,'test@test.com','test','$2a$10$d9OOjk4wuJ3ds0ggSy2bdu4U3ftx3sfidtfHlJWvxd9FDdxx9E8xq');
 
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;

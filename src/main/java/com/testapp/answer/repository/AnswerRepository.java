@@ -9,4 +9,6 @@ public interface AnswerRepository extends JpaRepository<Answer, Integer> {
 
     List<Answer> findByQuestionId(Integer questionId);
 
+    Answer findByText(String text);
+
 }

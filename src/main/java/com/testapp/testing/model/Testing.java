@@ -17,7 +17,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-
 @Entity
 @Table(name = "testing")
 public final class Testing {
@@ -37,7 +36,7 @@ public final class Testing {
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
-    @OneToMany(mappedBy = "testing", cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "testing", cascade = { CascadeType.ALL })
     @OrderBy
     private Set<TestingQuestion> testingQuestions;
 
